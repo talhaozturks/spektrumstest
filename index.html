@@ -5,35 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spektrum Siyasal Bilimler Sempozyumu</title>
     
-    <!-- Tailwind CSS (Tarayıcı içi derleyici) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Tailwind Koyu Mod Ayarı -->
     <script>
         tailwind.config = {
             darkMode: 'class',
         }
     </script>
-
-    <!-- FontAwesome İkonları -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- React ve ReactDOM kütüphaneleri -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel (Tarayıcıda JSX'i çevirmek için) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        /* CSS Değişkenleri ve Özel Animasyonlar */
         :root {
             --grid-color: #e5e7eb;
         }
         .dark {
             --grid-color: #1e293b;
         }
-        
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -41,7 +30,6 @@
         .animate-fade-in-up {
             animation: fadeInUp 0.4s ease-out forwards;
         }
-
         @keyframes modalPop {
             from { opacity: 0; transform: scale(0.95) translateY(10px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
@@ -49,7 +37,6 @@
         .animate-modal-pop {
             animation: modalPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        
         @keyframes floatSlow {
             0%, 100% { transform: translateY(0) rotate(2deg); }
             50% { transform: translateY(-10px) rotate(-1deg); }
@@ -57,8 +44,6 @@
         .animate-float-slow {
             animation: floatSlow 4s ease-in-out infinite;
         }
-
-        /* Tema Değişimine Duyarlı Grid Arkaplan */
         .bg-grid-pattern {
             background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 40px 40px;
@@ -68,10 +53,8 @@
     </style>
 </head>
 <body class="transition-colors duration-500 bg-[#fafafa] dark:bg-[#0f172a]">
-    <!-- React uygulamasının yükleneceği ana div -->
     <div id="root"></div>
 
-    <!-- Uygulama Kodları (Babel ile derlenir) -->
     <script type="text/babel">
         const { useState, useEffect } = React;
 
@@ -81,18 +64,40 @@
             const [textIndex, setTextIndex] = useState(0);
             const [showTeam, setShowTeam] = useState(false);
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-            
-            // Tanıtım videosu modal (pencere) state'i
             const [showIntroVideo, setShowIntroVideo] = useState(true);
-            
-            // Gizli Galeri Modal State'i
             const [showSecretGallery, setShowSecretGallery] = useState(false);
             const [galleryIndex, setGalleryIndex] = useState(0);
-            
-            // Koyu Mod State'i
             const [isDarkMode, setIsDarkMode] = useState(false);
 
-            // Koyu Modu HTML'e uygulama
+            const calculateTimeLeft = () => {
+                const targetDate = new Date('2026-09-25T00:00:00');
+                const now = new Date();
+                const difference = targetDate - now;
+
+                let timeLeft = {};
+
+                if (difference > 0) {
+                    timeLeft = {
+                        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                        minutes: Math.floor((difference / 1000 / 60) % 60),
+                        seconds: Math.floor((difference / 1000) % 60)
+                    };
+                } else {
+                    timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+                }
+                return timeLeft;
+            };
+
+            const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    setTimeLeft(calculateTimeLeft());
+                }, 1000);
+                return () => clearTimeout(timer);
+            });
+
             useEffect(() => {
                 if (isDarkMode) {
                     document.documentElement.classList.add('dark');
@@ -117,7 +122,6 @@
                 "assets/kabasakal1.png"
             ];
 
-            // Yükleme Animasyonları
             useEffect(() => {
                 if (!isLoading) return;
                 const progressInterval = setInterval(() => {
@@ -144,15 +148,12 @@
             if (isLoading) {
                 return (
                     <div className="fixed inset-0 flex flex-col items-center justify-center pb-24 md:pb-0 bg-[#fafafa] dark:bg-[#0f172a] font-sans selection:bg-[#162a45] selection:text-white transition-colors duration-500 z-[200] overflow-hidden">
-                        
-                        {/* SAĞDAKİ GÖRSEL VE KONUŞMA BALONCUĞU */}
                         <div className="absolute bottom-0 right-0 md:right-10 flex flex-col items-end animate-fade-in-up z-10" style={{ animationDelay: '0.1s' }}>
                             <div className="relative bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-2 md:p-4 rounded-xl md:rounded-2xl shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] mb-1 md:mb-2 mr-4 md:mr-10 transform -rotate-2 hover:rotate-0 transition-transform max-w-[140px] md:max-w-none text-center md:text-left">
                                 <p className="text-[#162a45] dark:text-[#f8fafc] font-bold text-xs md:text-base whitespace-normal md:whitespace-nowrap leading-tight">"En İyi politika!"</p>
                                 <p className="text-[10px] md:text-sm text-[#8c9eb1] font-mono text-right mt-1">- Işıl IŞIKLI</p>
                                 <div className="absolute -bottom-[6px] md:-bottom-[9px] right-6 md:right-8 w-3 h-3 md:w-4 md:h-4 bg-white dark:bg-[#1e293b] border-b-2 border-r-2 border-[#162a45] dark:border-[#8c9eb1] transform rotate-45"></div>
                             </div>
-                            
                             <img 
                                 src="assets/aaisil-S9zZFaal.png" 
                                 alt="Işıl Işıklı"
@@ -182,7 +183,6 @@
                 );
             }
 
-            // Komisyon Verileri
             const committees = [
                 { id: "01", title: "Siyasal Ekonomi", icon: "fa-solid fa-scale-balanced", desc: "Sermayenin dinamikleri ile kamusal refahın sınırları. Kriz anlarında devletin müdahale araçları, gelir dağılımı adaletsizliği ve sürdürülebilir büyümenin ekonomi-politiği masaya yatırılıyor." },
                 { id: "02", title: "Çevre Politikaları", icon: "fa-solid fa-leaf", desc: "Doğa bir kaynak mıdır, yoksa korunması gereken bir özne mi? Antroposen çağında ekolojik yıkıma karşı devletin regülasyon kapasitesi ve yeşil politikaların anayasal inşası tartışılıyor." },
@@ -195,21 +195,20 @@
                 { id: "09", title: "Gündem", icon: "fa-solid fa-triangle-exclamation", desc: "Öngörülemeyeni yönetmek. Ani gelişen küresel ve yerel kriz senaryoları karşısında devlet refleksleri, risk yönetimi ve acil durum politikalarının simülasyon tabanlı stratejik analizi." },
             ];
 
-            // Kadro verileri
             const teamMembers = [
-                { id: 1, name: "Işıl Işıklı", role: "Kurucu Konferans Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/isil-S9zZFaal.jpg", instagram: "spektrumorg" },
-                { id: 2, name: "Kaan Yalçın", role: "Organizasyon Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/kaan-C0YLuY5Z.JPG", instagram: "spektrumorg" },
-                { id: 3, name: "Nisa Nur Zor", role: "Organizasyon Eş Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/nisa-s_pBt2t5.jpg", instagram: "spektrumorg" },
-                { id: 4, name: "Yaren Yılmaz", role: "Genel Sekreter", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/yaren-DsLrIL5J.jpg", instagram: "spektrumorg" },
-                { id: 5, name: "Ahmet Tarık Kabasakal", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/ahmet-BQxzsr1Y.jpg", instagram: "spektrumorg" },
-                { id: 6, name: "Zeynep Uyanık", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/zeynep-nFL2kSKe.jpg", instagram: "spektrumorg" },
-                { id: 7, name: "Doruk Tibet Çetin", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/doruk-vBg1w4z7.jpg", instagram: "spektrumorg" },
+                { id: 1, name: "Işıl Işıklı", role: "Kurucu Konferans Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/isil-S9zZFaal.jpg", instagram: "talha.ozturks" },
+                { id: 2, name: "Kaan Yalçın", role: "Organizasyon Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/kaan-C0YLuY5Z.JPG", instagram: "talha.ozturks" },
+                { id: 3, name: "Nisa Nur Zor", role: "Organizasyon Eş Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/nisa-s_pBt2t5.jpg", instagram: "talha.ozturks" },
+                { id: 4, name: "Yaren Yılmaz", role: "Genel Sekreter", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/yaren-DsLrIL5J.jpg", instagram: "talha.ozturks" },
+                { id: 5, name: "Ahmet Tarık Kabasakal", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/ahmet-BQxzsr1Y.jpg", instagram: "talha.ozturks" },
+                { id: 6, name: "Zeynep Uyanık", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/zeynep-nFL2kSKe.jpg", instagram: "talha.ozturks" },
+                { id: 7, name: "Doruk Tibet Çetin", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/doruk-vBg1w4z7.jpg", instagram: "talha.ozturks" },
+                { id: 8, name: "Sare Nisan Danışmaz", role: "IT Başkanı", img: "assets/nisan1.png", instagram: "talha.ozturks" },
             ];
 
             return (
                 <div className="min-h-screen bg-[#fafafa] dark:bg-[#0f172a] font-sans text-[#162a45] dark:text-[#f8fafc] selection:bg-[#162a45] dark:selection:bg-[#8c9eb1] selection:text-white pb-20 bg-grid-pattern relative transition-colors duration-500">
                     
-                    {/* GİRİŞ TANITIM VİDEOSU (MODAL) */}
                     {showIntroVideo && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#162a45]/60 dark:bg-[#0f172a]/80 backdrop-blur-sm p-4 transition-all duration-500">
                             <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 pt-12 relative shadow-[8px_8px_0px_#162a45] dark:shadow-[8px_8px_0px_#8c9eb1] max-w-[450px] w-full flex flex-col items-center animate-modal-pop">
@@ -239,11 +238,9 @@
                         </div>
                     )}
 
-                    {/* GİZLİ GALERİ (MODAL) */}
                     {showSecretGallery && (
                         <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 transition-all duration-500 animate-fade-in-up">
                             
-                            {/* Kapatma Butonu */}
                             <button
                                 onClick={() => setShowSecretGallery(false)}
                                 className="absolute top-4 right-4 md:top-6 md:right-6 text-white/80 hover:text-red-400 transition-colors duration-300 z-[350] text-3xl md:text-4xl"
@@ -252,8 +249,6 @@
                             </button>
 
                             <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 h-[90vh] md:h-[85vh]">
-                                
-                                {/* SOL: Galeri Alanı */}
                                 <div className="flex-1 w-full relative flex items-center justify-center h-full max-h-[60vh] md:max-h-full bg-black border-2 border-slate-700/50 rounded-xl overflow-hidden shadow-2xl">
                                     <img 
                                         src={secretImages[galleryIndex]} 
@@ -261,7 +256,6 @@
                                         className="max-w-full max-h-full object-contain select-none"
                                     />
                                     
-                                    {/* Yön Tuşları */}
                                     <button 
                                         onClick={() => setGalleryIndex(prev => prev === 0 ? secretImages.length - 1 : prev - 1)}
                                         className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center backdrop-blur-sm transition-all border border-white/20 shadow-lg"
@@ -275,15 +269,12 @@
                                         <i className="fa-solid fa-chevron-right text-lg md:text-2xl"></i>
                                     </button>
 
-                                    {/* Resim Sayacı */}
                                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 border border-white/20 text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-mono tracking-widest backdrop-blur-md">
                                         {galleryIndex + 1} / {secretImages.length}
                                     </div>
                                 </div>
 
-                                {/* SAĞ: Kaan Konuşuyor */}
                                 <div className="w-full md:w-1/3 flex flex-col items-center justify-center relative mt-6 md:mt-0">
-                                    {/* Konuşma Baloncuğu */}
                                     <div className="relative bg-[#fafafa] border-2 border-[#162a45] text-[#162a45] p-4 md:p-5 rounded-2xl shadow-xl mb-4 md:mb-6 animate-float-slow max-w-[200px] md:max-w-[250px] z-10">
                                         <p className="font-bold text-sm md:text-lg leading-tight text-center">"ekip çok sağlam"</p>
                                         <p className="text-[10px] md:text-xs text-[#8c9eb1] font-mono mt-2 text-right">-Kaan Yalçın</p>
@@ -291,7 +282,6 @@
                                         <div className="absolute -bottom-[9px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-t-[13px] border-t-[#fafafa] border-r-[8px] border-r-transparent"></div>
                                     </div>
                                     
-                                    {/* Kaan Görseli */}
                                     <img 
                                         src="assets/kaankonusuyor.png" 
                                         alt="Kaan Konuşuyor" 
@@ -302,7 +292,6 @@
                         </div>
                     )}
 
-                    {/* KOYU MOD BUTONU */}
                     <button
                         onClick={() => setIsDarkMode(!isDarkMode)}
                         className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-[#162a45] dark:bg-[#1e293b] border-2 border-transparent dark:border-[#8c9eb1] text-white dark:text-[#8c9eb1] shadow-xl flex items-center justify-center transition-all duration-500 z-50 hover:scale-110 overflow-hidden"
@@ -314,7 +303,6 @@
                         </div>
                     </button>
 
-                    {/* NAVBAR */}
                     <nav className="sticky top-0 z-40 bg-[#fafafa]/95 dark:bg-[#0f172a]/95 backdrop-blur-sm border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
                         <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
                             <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }}>
@@ -363,7 +351,6 @@
                     </nav>
 
                     {showTeam ? (
-                        /* KADROMUZ EKRANI */
                         <main className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-16 min-h-[70vh] animate-fade-in-up">
                             <div className="text-center mb-10 md:mb-16 relative">
                                 <h1 className="text-4xl md:text-7xl font-serif font-bold mb-4 text-[#162a45] dark:text-white">Kadromuz</h1>
@@ -391,18 +378,15 @@
                                     </div>
                                 ))}
 
-                                {/* GİZLİ KART EKLENTİSİ */}
                                 <div 
                                     onClick={() => setShowSecretGallery(true)}
                                     className="cursor-pointer group relative flex flex-col items-center justify-center p-6 border-2 border-[#162a45] dark:border-[#8c9eb1] shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] hover:-translate-y-2 transition-transform duration-300 min-h-[300px] overflow-hidden"
                                     style={{
-                                        /* Buruşuk Bordo Kağıt Dokusu (SVG Filter Trick) */
                                         backgroundColor: '#5c0f14',
                                         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E")`,
                                         backgroundBlendMode: 'multiply'
                                     }}
                                 >
-                                    {/* Üzerine gelince parlayan karanlık filtre */}
                                     <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500"></div>
                                     
                                     <h3 className="relative z-10 font-bold text-4xl md:text-5xl font-serif text-[#f8fafc] border-4 border-dashed border-[#f8fafc]/80 p-4 transform -rotate-12 group-hover:rotate-0 transition-transform duration-500 drop-shadow-2xl tracking-widest">
@@ -413,10 +397,7 @@
                             </div>
                         </main>
                     ) : (
-                        /* ANA SAYFA İÇERİĞİ */
                         <main className="max-w-7xl mx-auto px-4 md:px-8">
-                            
-                            {/* HERO SECTION */}
                             <section className="py-12 md:py-24 flex flex-col lg:flex-row items-center gap-10 md:gap-12 border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
                                 <div className="flex-1 space-y-6 md:space-y-8 w-full">
                                     <div className="inline-flex flex-wrap items-center gap-2 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-white dark:bg-[#1e293b] p-1 pr-4 shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] transition-colors duration-500">
@@ -438,6 +419,28 @@
                                         <button className="w-full sm:w-auto justify-center bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-6 md:px-8 py-4 font-bold tracking-wide flex items-center gap-2 hover:bg-[#0f1d30] dark:hover:bg-white transition-colors group">
                                             Başvuruyu Tamamla <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform ml-1"></i>
                                         </button>
+
+                                        <div className="flex items-center gap-2 md:gap-4 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-white dark:bg-[#1e293b] px-4 py-3 md:py-2.5 shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] transition-colors duration-500">
+                                            <div className="flex flex-col items-center">
+                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-[#162a45] dark:text-[#f8fafc]">{String(timeLeft.days).padStart(2, '0')}</span>
+                                                <span className="text-[10px] uppercase font-bold text-[#8c9eb1]">GÜN</span>
+                                            </div>
+                                            <span className="text-xl md:text-2xl font-bold text-[#162a45] dark:text-[#f8fafc]">:</span>
+                                            <div className="flex flex-col items-center">
+                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-[#162a45] dark:text-[#f8fafc]">{String(timeLeft.hours).padStart(2, '0')}</span>
+                                                <span className="text-[10px] uppercase font-bold text-[#8c9eb1]">SAAT</span>
+                                            </div>
+                                            <span className="text-xl md:text-2xl font-bold text-[#162a45] dark:text-[#f8fafc]">:</span>
+                                            <div className="flex flex-col items-center">
+                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-[#162a45] dark:text-[#f8fafc]">{String(timeLeft.minutes).padStart(2, '0')}</span>
+                                                <span className="text-[10px] uppercase font-bold text-[#8c9eb1]">DAKİKA</span>
+                                            </div>
+                                            <span className="text-xl md:text-2xl font-bold text-[#162a45] dark:text-[#f8fafc] animate-pulse">:</span>
+                                            <div className="flex flex-col items-center">
+                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-[#162a45] dark:text-[#f8fafc]">{String(timeLeft.seconds).padStart(2, '0')}</span>
+                                                <span className="text-[10px] uppercase font-bold text-[#8c9eb1]">SANİYE</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -479,7 +482,6 @@
                                 </div>
                             </section>
 
-                            {/* HAKKIMIZDA */}
                             <section id="hakkimizda" className="py-16 md:py-20 border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
                                 <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
                                     <div>
@@ -502,12 +504,10 @@
                                 </div>
                             </section>
 
-                            {/* PROGRAM */}
                             <section id="program" className="py-16 md:py-20 border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
-                                <h2 className="text-3xl md:text-4xl font-serif font-bold mb-10 md:mb-12 text-center text-[#162a45] dark:text-white">Çalıştay Akışı</h2>
+                                <h2 className="text-3xl md:text-4xl font-serif font-bold mb-10 md:mb-12 text-center text-[#162a45] dark:text-white">Program Akışı</h2>
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    {/* GÜN 1 */}
                                     <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] flex flex-col group hover:-translate-y-2 transition-transform duration-300">
                                         <div className="border-b-2 border-[#162a45] dark:border-[#8c9eb1] p-3 md:p-4 bg-[#f8fafc] dark:bg-[#0f172a] flex justify-between items-center transition-colors duration-500">
                                             <span className="font-bold text-lg md:text-xl text-[#162a45] dark:text-white">GÜN 1</span>
@@ -521,7 +521,6 @@
                                         </div>
                                     </div>
 
-                                    {/* GÜN 2 */}
                                     <div className="bg-[#162a45] dark:bg-[#334155] text-white border-2 border-[#162a45] dark:border-[#8c9eb1] flex flex-col group hover:-translate-y-2 transition-transform duration-300 md:shadow-[8px_8px_0px_#8c9eb1] shadow-[4px_4px_0px_#8c9eb1] transition-colors duration-500">
                                         <div className="border-b-2 border-white/20 dark:border-[#8c9eb1]/30 p-3 md:p-4 bg-white/5 dark:bg-[#0f172a]/30 flex justify-between items-center">
                                             <span className="font-bold text-lg md:text-xl">GÜN 2</span>
@@ -535,7 +534,6 @@
                                         </div>
                                     </div>
 
-                                    {/* GÜN 3 */}
                                     <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] flex flex-col group hover:-translate-y-2 transition-transform duration-300">
                                         <div className="border-b-2 border-[#162a45] dark:border-[#8c9eb1] p-3 md:p-4 bg-[#f8fafc] dark:bg-[#0f172a] flex justify-between items-center transition-colors duration-500">
                                             <span className="font-bold text-lg md:text-xl text-[#162a45] dark:text-white">GÜN 3</span>
@@ -551,7 +549,6 @@
                                 </div>
                             </section>
 
-                            {/* KOMİSYONLAR */}
                             <section id="komisyonlar" className="py-16 md:py-20">
                                 <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
                                     <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4 text-[#162a45] dark:text-white transition-colors duration-500">Dokuz Komisyon,<br/>Tek Bir Soru.</h2>
@@ -581,7 +578,6 @@
                         </main>
                     )}
 
-                    {/* FOOTER */}
                     <footer className="bg-white dark:bg-[#1e293b] border-t-2 border-[#162a45] dark:border-[#8c9eb1] py-10 md:py-12 mt-8 transition-colors duration-500">
                         <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
                             <div className="flex flex-col items-center md:flex-row md:items-center gap-3 text-center md:text-left">
