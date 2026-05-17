@@ -1,368 +1,400 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  BookOpen, Landmark, Calendar, MapPin, ArrowRight, Mail, ChevronRight, 
-  Scale, Leaf, HeartPulse, Lightbulb, Gavel, Shield, Users, Globe, AlertTriangle, Instagram 
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spektrum Siyasal Bilimler Sempozyumu</title>
+    
+    <!-- Tailwind CSS (Tarayıcı içi derleyici) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome İkonları -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- React ve ReactDOM kütüphaneleri -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel (Tarayıcıda JSX'i çevirmek için) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
-  const [textIndex, setTextIndex] = useState(0);
-  const [showTeam, setShowTeam] = useState(false); // Kadro ekranını kontrol eden state
-
-  const loadingTexts = [
-    "En iyi deneyim için tercihiniz.",
-    "Site yükleniyor...",
-    ":P"
-  ];
-
-  // Loading Animasyonları
-  useEffect(() => {
-    if (!isLoading) return;
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          setTimeout(() => setIsLoading(false), 600);
-          return 100;
+    <style>
+        /* Özel Animasyonlar */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        const increment = Math.random() * 3 + 1; 
-        return Math.min(prev + increment, 100);
-      }, 50);
-    }, []);
+        .animate-fade-in-up {
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+        /* Grid arkaplan deseni için Tailwind konfigürasyonu yerine doğrudan stil */
+        .bg-grid-pattern {
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: -1px -1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- React uygulamasının yükleneceği ana div -->
+    <div id="root"></div>
 
-    const textInterval = setInterval(() => {
-      setTextIndex((prev) => (prev + 1) % loadingTexts.length);
-    }, 1200);
+    <!-- Uygulama Kodları (Babel ile derlenir) -->
+    <script type="text/babel">
+        const { useState, useEffect } = React;
 
-    return () => {
-      clearInterval(progressInterval);
-      clearInterval(textInterval);
-    };
-  }, [isLoading]);
+        function App() {
+            const [isLoading, setIsLoading] = useState(true);
+            const [progress, setProgress] = useState(0);
+            const [textIndex, setTextIndex] = useState(0);
+            const [showTeam, setShowTeam] = useState(false);
 
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#fafafa] font-sans selection:bg-[#162a45] selection:text-white">
-        <div className="mb-10 flex flex-col items-center transform transition-transform duration-1000 hover:scale-105">
-          {/* Sizin İlettiğiniz Loading Logosu */}
-          <img 
-            src="https://i.postimg.cc/K8wBmPpF/spektrumyazisiz.jpg" 
-            alt="Spektrum Loading Logo" 
-            className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-sm"
-          />
-          <h1 className="text-3xl md:text-5xl font-serif tracking-widest text-[#162a45] mt-4" style={{ fontFamily: 'Georgia, serif' }}>
-            SPEKTRUM
-          </h1>
-        </div>
-        <div className="w-64 md:w-80 h-3 border-2 border-[#162a45] bg-white p-0.5 relative overflow-hidden">
-          <div className="h-full bg-[#162a45] transition-all duration-100 ease-out" style={{ width: `${progress}%` }} />
-        </div>
-        <div className="h-8 mt-4 overflow-hidden flex items-center justify-center">
-          <p key={textIndex} className="text-[#162a45] text-sm md:text-base font-medium animate-fade-in-up" style={{ animation: 'fadeInUp 0.3s ease-out forwards' }}>
-            {loadingTexts[textIndex]}
-          </p>
-        </div>
-        <style dangerouslySetInnerHTML={{__html: `@keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`}} />
-      </div>
-    );
-  }
+            const loadingTexts = [
+                "En iyi deneyim için tercihiniz.",
+                "Site yükleniyor...",
+                ":P"
+            ];
 
-  // Komisyon Verileri (Özgünleştirilmiş Açıklamalar)
-  const committees = [
-    { id: "01", title: "Siyasal Ekonomi", icon: Scale, desc: "Sermayenin dinamikleri ile kamusal refahın sınırları. Kriz anlarında devletin müdahale araçları, gelir dağılımı adaletsizliği ve sürdürülebilir büyümenin ekonomi-politiği masaya yatırılıyor." },
-    { id: "02", title: "Çevre Politikaları", icon: Leaf, desc: "Doğa bir kaynak mıdır, yoksa korunması gereken bir özne mi? Antroposen çağında ekolojik yıkıma karşı devletin regülasyon kapasitesi ve yeşil politikaların anayasal inşası tartışılıyor." },
-    { id: "03", title: "Sağlık Politikaları", icon: HeartPulse, desc: "Biyopolitika ekseninde yaşam hakkı. Toplum sağlığının güvence altına alınmasında devletin rasyonalitesi, evrensel erişim ve kriz anlarında etik önceliklerin belirlenmesi." },
-    { id: "04", title: "Eğitim Politikaları", icon: Lightbulb, desc: "İdeal yurttaşın inşasından, eleştirel aklın özgürleşmesine. Fırsat eşitliğinin sağlanması, eğitimde ideolojik aygıtların rolü ve geleceğin müfredat politikaları mercek altında." },
-    { id: "05", title: "Siyasal Hukuk", icon: Gavel, desc: "Normun ve istisnanın çatışması. Hukuk devletinin sınırları, anayasal güvencelerin esnekliği ve yürütme gücünün sınırlandırılmasında yargısal mekanizmaların işlevselliği." },
-    { id: "06", title: "İnsan Hakları", icon: Shield, desc: "Leviathan'a karşı bireyin kalkanı. Güvenlik ve özgürlük ikileminde temel hakların korunması, devletin müdahale alanının daraltılması ve evrensel normların yerel dinamiklerle sınavı." },
-    { id: "07", title: "Siyasette Sosyoloji", icon: Users, desc: "Toplumun fay hatları. Kolektif belleğin inşası, kamusal alanın kimlikler arası müzakereye açılması ve devletin farklılıkları yönetme pratiklerinin eleştirel analizi." },
-    { id: "08", title: "Uluslararası İlişkiler", icon: Globe, desc: "Küresel anarşi ve gücün mimarisi. Ulus-devlet egemenliğinin aşınması, yeni hegemonya mücadeleleri ve çok kutuplu dünyada diplomasi ve ittifakların yeniden tanımlanması." },
-    { id: "09", title: "Gündem", icon: AlertTriangle, desc: "Öngörülemeyeni yönetmek. Ani gelişen küresel ve yerel kriz senaryoları karşısında devlet refleksleri, risk yönetimi ve acil durum politikalarının simülasyon tabanlı stratejik analizi." },
-  ];
+            // Yükleme Animasyonları
+            useEffect(() => {
+                if (!isLoading) return;
+                const progressInterval = setInterval(() => {
+                    setProgress((prev) => {
+                        if (prev >= 100) {
+                            clearInterval(progressInterval);
+                            setTimeout(() => setIsLoading(false), 600);
+                            return 100;
+                        }
+                        const increment = Math.random() * 3 + 1; 
+                        return Math.min(prev + increment, 100);
+                    }, 50);
+                }, []);
 
-  // Kadro için veriler
-  const teamMembers = [
-    { id: 1, name: "Işıl Işıklı", role: "Kurucu Konferans Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/isil-S9zZFaal.jpg", instagram: "spektrumorg" },
-    { id: 2, name: "Kaan Yalçın", role: "Organizasyon Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/kaan-C0YLuY5Z.JPG", instagram: "spektrumorg" },
-    { id: 3, name: "Nisa Nur Zor", role: "Organizasyon Eş Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/nisa-s_pBt2t5.jpg", instagram: "spektrumorg" },
-    { id: 4, name: "Yaren Yılmaz", role: "Genel Sekreter", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/yaren-DsLrIL5J.jpg", instagram: "spektrumorg" },
-    { id: 5, name: "Ahmet Tarık Kabasakal", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/ahmet-BQxzsr1Y.jpg", instagram: "spektrumorg" },
-    { id: 6, name: "Zeynep Uyanık", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/zeynep-nFL2kSKe.jpg", instagram: "spektrumorg" },
-    { id: 7, name: "Doruk Tibet Çetin", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/doruk-vBg1w4z7.jpg", instagram: "spektrumorg" },
-  ];
+                const textInterval = setInterval(() => {
+                    setTextIndex((prev) => (prev + 1) % loadingTexts.length);
+                }, 1200);
 
-  return (
-    <div className="min-h-screen bg-[#fafafa] font-sans text-[#162a45] selection:bg-[#162a45] selection:text-white pb-20"
-         style={{
-           backgroundImage: 'linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)',
-           backgroundSize: '40px 40px',
-           backgroundPosition: '-1px -1px'
-         }}>
-      
-      {/* NAVBAR */}
-      <nav className="sticky top-0 z-40 bg-[#fafafa]/95 backdrop-blur-sm border-b-2 border-[#162a45]">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setShowTeam(false)}>
-            {/* Sizin İlettiğiniz Sol Üst Logo */}
-            <img 
-              src="https://i.postimg.cc/rsfR3xt6/spektrum.jpg" 
-              alt="Spektrum Navbar Logo" 
-              className="w-12 h-12 object-contain"
-            />
-            <div>
-              <h2 className="text-xl font-serif font-bold tracking-widest leading-none">SPEKTRUM</h2>
-              <span className="text-[0.6rem] tracking-widest text-[#8c9eb1] uppercase">Sempozyumu</span>
-            </div>
-          </div>
-          <div className="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide">
-            <button onClick={() => setShowTeam(false)} className={`transition-colors ${!showTeam ? 'text-[#162a45] font-bold' : 'hover:text-[#8c9eb1]'}`}>ANA SAYFA</button>
-            <a href="#hakkimizda" className="hover:text-[#8c9eb1] transition-colors" onClick={() => setShowTeam(false)}>HAKKIMIZDA</a>
-            <a href="#program" className="hover:text-[#8c9eb1] transition-colors" onClick={() => setShowTeam(false)}>PROGRAM</a>
-            
-            {/* KADROMUZ Butonu */}
-            <button onClick={() => setShowTeam(true)} className={`transition-colors ${showTeam ? 'text-[#162a45] border-b-2 border-[#162a45] pb-1 font-bold' : 'hover:text-[#8c9eb1]'}`}>KADROMUZ</button>
-            
-            <button className="border-2 border-[#162a45] px-6 py-2 hover:bg-[#162a45] hover:text-white transition-colors duration-300 font-bold">
-              KAYIT OL
-            </button>
-          </div>
-        </div>
-      </nav>
+                return () => {
+                    clearInterval(progressInterval);
+                    clearInterval(textInterval);
+                };
+            }, [isLoading]);
 
-      {showTeam ? (
-        /* KADROMUZ EKRANI (Farklı UI) */
-        <main className="max-w-7xl mx-auto px-4 md:px-8 py-16 min-h-[70vh] animate-fade-in-up" style={{ animation: 'fadeInUp 0.4s ease-out forwards' }}>
-          <div className="text-center mb-16 relative">
-            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-4">Kadromuz</h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto border-t-2 border-dashed border-[#162a45] pt-4 mt-4">
-              Spektrum Sempozyumu'nu hayata geçiren ekibimizle tanışın.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {teamMembers.map((member) => (
-              <div key={member.id} className="bg-white border-2 border-[#162a45] p-6 flex flex-col items-center group shadow-[4px_4px_0px_#162a45] hover:-translate-y-2 transition-transform duration-300">
-                <div className="w-32 h-32 border-2 border-[#162a45] bg-[#f8fafc] mb-4 overflow-hidden rounded-full p-1">
-                  <img src={member.img} alt={member.name} className="w-full h-full object-cover rounded-full filter grayscale group-hover:grayscale-0 transition-all duration-300" />
+            if (isLoading) {
+                return (
+                    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#fafafa] font-sans selection:bg-[#162a45] selection:text-white">
+                        <div className="mb-10 flex flex-col items-center transform transition-transform duration-1000 hover:scale-105">
+                            <img 
+                                src="https://i.postimg.cc/K8wBmPpF/spektrumyazisiz.jpg" 
+                                alt="Spektrum Loading Logo" 
+                                className="w-40 h-40 md:w-56 md:h-56 object-contain drop-shadow-sm"
+                            />
+                            <h1 className="text-3xl md:text-5xl font-serif tracking-widest text-[#162a45] mt-4" style={{ fontFamily: 'Georgia, serif' }}>
+                                SPEKTRUM
+                            </h1>
+                        </div>
+                        <div className="w-64 md:w-80 h-3 border-2 border-[#162a45] bg-white p-0.5 relative overflow-hidden">
+                            <div className="h-full bg-[#162a45] transition-all duration-100 ease-out" style={{ width: `${progress}%` }}></div>
+                        </div>
+                        <div className="h-8 mt-4 overflow-hidden flex items-center justify-center">
+                            <p key={textIndex} className="text-[#162a45] text-sm md:text-base font-medium animate-fade-in-up">
+                                {loadingTexts[textIndex]}
+                            </p>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Komisyon Verileri (FontAwesome ikonları eklendi)
+            const committees = [
+                { id: "01", title: "Siyasal Ekonomi", icon: "fa-solid fa-scale-balanced", desc: "Sermayenin dinamikleri ile kamusal refahın sınırları. Kriz anlarında devletin müdahale araçları, gelir dağılımı adaletsizliği ve sürdürülebilir büyümenin ekonomi-politiği masaya yatırılıyor." },
+                { id: "02", title: "Çevre Politikaları", icon: "fa-solid fa-leaf", desc: "Doğa bir kaynak mıdır, yoksa korunması gereken bir özne mi? Antroposen çağında ekolojik yıkıma karşı devletin regülasyon kapasitesi ve yeşil politikaların anayasal inşası tartışılıyor." },
+                { id: "03", title: "Sağlık Politikaları", icon: "fa-solid fa-heart-pulse", desc: "Biyopolitika ekseninde yaşam hakkı. Toplum sağlığının güvence altına alınmasında devletin rasyonalitesi, evrensel erişim ve kriz anlarında etik önceliklerin belirlenmesi." },
+                { id: "04", title: "Eğitim Politikaları", icon: "fa-solid fa-lightbulb", desc: "İdeal yurttaşın inşasından, eleştirel aklın özgürleşmesine. Fırsat eşitliğinin sağlanması, eğitimde ideolojik aygıtların rolü ve geleceğin müfredat politikaları mercek altında." },
+                { id: "05", title: "Siyasal Hukuk", icon: "fa-solid fa-gavel", desc: "Normun ve istisnanın çatışması. Hukuk devletinin sınırları, anayasal güvencelerin esnekliği ve yürütme gücünün sınırlandırılmasında yargısal mekanizmaların işlevselliği." },
+                { id: "06", title: "İnsan Hakları", icon: "fa-solid fa-shield-halved", desc: "Leviathan'a karşı bireyin kalkanı. Güvenlik ve özgürlük ikileminde temel hakların korunması, devletin müdahale alanının daraltılması ve evrensel normların yerel dinamiklerle sınavı." },
+                { id: "07", title: "Siyasette Sosyoloji", icon: "fa-solid fa-users", desc: "Toplumun fay hatları. Kolektif belleğin inşası, kamusal alanın kimlikler arası müzakereye açılması ve devletin farklılıkları yönetme pratiklerinin eleştirel analizi." },
+                { id: "08", title: "Uluslararası İlişkiler", icon: "fa-solid fa-globe", desc: "Küresel anarşi ve gücün mimarisi. Ulus-devlet egemenliğinin aşınması, yeni hegemonya mücadeleleri ve çok kutuplu dünyada diplomasi ve ittifakların yeniden tanımlanması." },
+                { id: "09", title: "Gündem", icon: "fa-solid fa-triangle-exclamation", desc: "Öngörülemeyeni yönetmek. Ani gelişen küresel ve yerel kriz senaryoları karşısında devlet refleksleri, risk yönetimi ve acil durum politikalarının simülasyon tabanlı stratejik analizi." },
+            ];
+
+            // Kadro verileri
+            const teamMembers = [
+                { id: 1, name: "Işıl Işıklı", role: "Kurucu Konferans Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/isil-S9zZFaal.jpg", instagram: "spektrumorg" },
+                { id: 2, name: "Kaan Yalçın", role: "Organizasyon Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/kaan-C0YLuY5Z.JPG", instagram: "spektrumorg" },
+                { id: 3, name: "Nisa Nur Zor", role: "Organizasyon Eş Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/nisa-s_pBt2t5.jpg", instagram: "spektrumorg" },
+                { id: 4, name: "Yaren Yılmaz", role: "Genel Sekreter", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/yaren-DsLrIL5J.jpg", instagram: "spektrumorg" },
+                { id: 5, name: "Ahmet Tarık Kabasakal", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/ahmet-BQxzsr1Y.jpg", instagram: "spektrumorg" },
+                { id: 6, name: "Zeynep Uyanık", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/zeynep-nFL2kSKe.jpg", instagram: "spektrumorg" },
+                { id: 7, name: "Doruk Tibet Çetin", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/doruk-vBg1w4z7.jpg", instagram: "spektrumorg" },
+            ];
+
+            return (
+                <div className="min-h-screen bg-[#fafafa] font-sans text-[#162a45] selection:bg-[#162a45] selection:text-white pb-20 bg-grid-pattern">
+                    
+                    {/* NAVBAR */}
+                    <nav className="sticky top-0 z-40 bg-[#fafafa]/95 backdrop-blur-sm border-b-2 border-[#162a45]">
+                        <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+                            <div className="flex items-center gap-3 cursor-pointer" onClick={() => setShowTeam(false)}>
+                                <img 
+                                    src="https://i.postimg.cc/rsfR3xt6/spektrum.jpg" 
+                                    alt="Spektrum Navbar Logo" 
+                                    className="w-12 h-12 object-contain"
+                                />
+                                <div>
+                                    <h2 className="text-xl font-serif font-bold tracking-widest leading-none">SPEKTRUM</h2>
+                                    <span className="text-[0.6rem] tracking-widest text-[#8c9eb1] uppercase">Sempozyumu</span>
+                                </div>
+                            </div>
+                            <div className="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide">
+                                <button onClick={() => setShowTeam(false)} className={`transition-colors ${!showTeam ? 'text-[#162a45] font-bold' : 'hover:text-[#8c9eb1]'}`}>ANA SAYFA</button>
+                                <a href="#hakkimizda" className="hover:text-[#8c9eb1] transition-colors" onClick={(e) => { if(showTeam) { setShowTeam(false); } }}>HAKKIMIZDA</a>
+                                <a href="#program" className="hover:text-[#8c9eb1] transition-colors" onClick={(e) => { if(showTeam) { setShowTeam(false); } }}>PROGRAM</a>
+                                
+                                <button onClick={() => setShowTeam(true)} className={`transition-colors ${showTeam ? 'text-[#162a45] border-b-2 border-[#162a45] pb-1 font-bold' : 'hover:text-[#8c9eb1]'}`}>KADROMUZ</button>
+                                
+                                <button className="border-2 border-[#162a45] px-6 py-2 hover:bg-[#162a45] hover:text-white transition-colors duration-300 font-bold">
+                                    KAYIT OL
+                                </button>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {showTeam ? (
+                        /* KADROMUZ EKRANI */
+                        <main className="max-w-7xl mx-auto px-4 md:px-8 py-16 min-h-[70vh] animate-fade-in-up">
+                            <div className="text-center mb-16 relative">
+                                <h1 className="text-5xl md:text-7xl font-serif font-bold mb-4">Kadromuz</h1>
+                                <p className="text-lg text-slate-600 max-w-2xl mx-auto border-t-2 border-dashed border-[#162a45] pt-4 mt-4">
+                                    Spektrum Sempozyumu'nu hayata geçiren ekibimizle tanışın.
+                                </p>
+                            </div>
+                            
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                                {teamMembers.map((member) => (
+                                    <div key={member.id} className="bg-white border-2 border-[#162a45] p-6 flex flex-col items-center group shadow-[4px_4px_0px_#162a45] hover:-translate-y-2 transition-transform duration-300">
+                                        <div className="w-32 h-32 border-2 border-[#162a45] bg-[#f8fafc] mb-4 overflow-hidden rounded-full p-1">
+                                            <img src={member.img} alt={member.name} className="w-full h-full object-cover rounded-full filter grayscale group-hover:grayscale-0 transition-all duration-300" />
+                                        </div>
+                                        <h3 className="font-bold text-xl font-serif mb-1 text-center">{member.name}</h3>
+                                        <p className="text-xs text-[#8c9eb1] mb-6 uppercase tracking-wider font-bold text-center h-8">{member.role}</p>
+                                        <a 
+                                            href={`https://instagram.com/${member.instagram}`} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="mt-auto flex items-center gap-2 text-[#162a45] hover:bg-[#162a45] hover:text-white transition-colors border-2 border-[#162a45] px-4 py-2 text-sm font-bold w-full justify-center"
+                                        >
+                                            <i className="fa-brands fa-instagram text-lg"></i> @{member.instagram}
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </main>
+                    ) : (
+                        /* ANA SAYFA İÇERİĞİ */
+                        <main className="max-w-7xl mx-auto px-4 md:px-8">
+                            
+                            {/* HERO SECTION */}
+                            <section className="py-16 md:py-24 flex flex-col lg:flex-row items-center gap-12 border-b-2 border-[#162a45]">
+                                <div className="flex-1 space-y-8">
+                                    <div className="inline-flex flex-wrap items-center gap-2 border-2 border-[#162a45] bg-white p-1 pr-4 shadow-[4px_4px_0px_#162a45]">
+                                        <span className="bg-[#162a45] text-white px-3 py-1 text-xs font-bold tracking-wider">TEMA 2026</span>
+                                        <span className="text-sm font-bold tracking-wide">Devletin Rolü ve Sorumlulukları</span>
+                                    </div>
+                                    
+                                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold leading-[1.1]">
+                                        Siyaseti <br />
+                                        <span className="text-transparent" style={{ WebkitTextStroke: '2px #162a45' }}>Yeniden</span> <br />
+                                        Düşünmek.
+                                    </h1>
+                                    
+                                    <p className="text-lg text-slate-700 max-w-xl border-l-4 border-[#162a45] pl-5 font-medium">
+                                        Spektrum, eleştirel düşünceyi ve politika analizini merkeze alan genç bir organizatör topluluğudur.
+                                    </p>
+                                    
+                                    <div className="flex flex-wrap items-center gap-4 pt-4">
+                                        <button className="bg-[#162a45] text-white px-8 py-4 font-bold tracking-wide flex items-center gap-2 hover:bg-[#0f1d30] transition-colors group">
+                                            Başvuruyu Tamamla <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform ml-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex-1 w-full lg:w-auto relative max-w-lg mx-auto">
+                                    <div className="absolute inset-0 bg-[#8c9eb1]/20 translate-x-4 translate-y-4 border-2 border-[#162a45]"></div>
+                                    
+                                    <div className="relative bg-white border-2 border-[#162a45] aspect-square flex flex-col justify-between overflow-hidden text-center shadow-lg group">
+                                        
+                                        <a 
+                                            href="https://maps.app.goo.gl/ELTrWvgLe17biP6N7" 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="absolute inset-0 z-0 cursor-pointer bg-slate-100"
+                                            title="Google Haritalar'da Görüntüle"
+                                        >
+                                            <img 
+                                                src="https://i.postimg.cc/jjCT4NRC/wgag-Ekran-Alintisi.png" 
+                                                alt="İÜ SBF Konum" 
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                                            />
+                                        </a>
+
+                                        <div className="relative z-10 bg-white/95 backdrop-blur-sm border-b-2 border-[#162a45] p-5">
+                                            <h3 className="font-serif font-bold text-[#162a45] text-sm md:text-base leading-snug">
+                                                İstanbul Üniversitesi<br/>Siyasal Bilgiler Fakültesi
+                                            </h3>
+                                        </div>
+                                        
+                                        <div className="flex-1 pointer-events-none"></div>
+
+                                        <div className="relative z-10 bg-white/95 backdrop-blur-sm border-t-2 border-[#162a45] p-5 flex flex-col gap-2 font-mono text-sm font-bold text-left">
+                                            <div className="flex justify-between items-center w-full">
+                                                <span className="text-[#8c9eb1]">TARİH</span>
+                                                <span>25–27 EYLÜL 2026</span>
+                                            </div>
+                                            <div className="flex justify-between items-center w-full">
+                                                <span className="text-[#8c9eb1]">MEKÂN</span>
+                                                <span>İ.Ü. SBF</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* HAKKIMIZDA */}
+                            <section id="hakkimizda" className="py-20 border-b-2 border-[#162a45]">
+                                <div className="grid md:grid-cols-2 gap-12 items-start">
+                                    <div>
+                                        <h2 className="text-4xl font-serif font-bold mb-6">Manifesto</h2>
+                                        <div className="space-y-4 text-slate-700 text-lg leading-relaxed">
+                                            <p>
+                                                Akademik disiplinin yöntemini, kamusal meselelerin sıcak gündemiyle bir araya getiren bir zemin kurmayı amaçlıyoruz. 
+                                            </p>
+                                            <p>
+                                                Üç gün boyunca; uzman akademisyenlerin rehberliğinde teorik bir çerçeve inşa ediyor, kriz senaryolarıyla bu çerçeveyi test ediyor ve katılımcıların bizzat kaleme aldığı yasa taslaklarını genel kurulda oylamaya açıyoruz.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="bg-[#162a45] text-white p-8 md:p-12 relative">
+                                        <div className="absolute -top-4 -left-4 w-8 h-8 border-t-4 border-l-4 border-[#8c9eb1]"></div>
+                                        <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-4 border-r-4 border-[#8c9eb1]"></div>
+                                        <h3 className="text-2xl font-serif font-bold mb-4 text-[#8c9eb1]">3 Günlük Serüven</h3>
+                                        <p className="text-white/80">Teoriden pratiğe, müzakereden oylamaya uzanan, gerçek dünyaya en yakın simülasyon deneyimi.</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* PROGRAM */}
+                            <section id="program" className="py-20 border-b-2 border-[#162a45]">
+                                <h2 className="text-4xl font-serif font-bold mb-12 text-center">Çalıştay Akışı</h2>
+                                
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    {/* GÜN 1 */}
+                                    <div className="bg-white border-2 border-[#162a45] flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+                                        <div className="border-b-2 border-[#162a45] p-4 bg-[#f8fafc] flex justify-between items-center">
+                                            <span className="font-bold text-xl">GÜN 1</span>
+                                            <span className="text-sm font-mono text-[#8c9eb1] font-bold">25 EYLÜL</span>
+                                        </div>
+                                        <div className="p-6 flex-1">
+                                            <h3 className="text-2xl font-serif font-bold mb-3 group-hover:text-[#8c9eb1] transition-colors">Uzman</h3>
+                                            <p className="text-slate-600 text-sm leading-relaxed">
+                                                Akademik açılış konferansları ve teorik zemin. Alanında öncü isimlerden, üç gün boyunca işlenecek tartışmaların kavramsal çerçevesini birlikte kuruyoruz.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* GÜN 2 */}
+                                    <div className="bg-[#162a45] text-white border-2 border-[#162a45] flex flex-col group hover:-translate-y-2 transition-transform duration-300 shadow-[8px_8px_0px_#8c9eb1]">
+                                        <div className="border-b-2 border-white/20 p-4 bg-white/5 flex justify-between items-center">
+                                            <span className="font-bold text-xl">GÜN 2</span>
+                                            <span className="text-sm font-mono text-[#8c9eb1] font-bold">26 EYLÜL</span>
+                                        </div>
+                                        <div className="p-6 flex-1">
+                                            <h3 className="text-2xl font-serif font-bold mb-3 text-[#8c9eb1]">Tartışma & Taslak</h3>
+                                            <p className="text-white/80 text-sm leading-relaxed">
+                                                Kriz senaryoları, komisyon müzakereleri ve yasa taslaklarının kaleme alınması. Katılımcılar, gerçek dünyaya yakın simülasyonlarla hukuki metinler üretiyor.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* GÜN 3 */}
+                                    <div className="bg-white border-2 border-[#162a45] flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+                                        <div className="border-b-2 border-[#162a45] p-4 bg-[#f8fafc] flex justify-between items-center">
+                                            <span className="font-bold text-xl">GÜN 3</span>
+                                            <span className="text-sm font-mono text-[#8c9eb1] font-bold">27 EYLÜL</span>
+                                        </div>
+                                        <div className="p-6 flex-1">
+                                            <h3 className="text-2xl font-serif font-bold mb-3 group-hover:text-[#8c9eb1] transition-colors">Genel Oturumlar</h3>
+                                            <p className="text-slate-600 text-sm leading-relaxed">
+                                                Komisyon raporlarının sunumu, genel kurul müzakeresi ve oylama. Üç günün ortak çıktısı, meclis onayıyla bir politika belgesine dönüşüyor.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            {/* KOMİSYONLAR */}
+                            <section id="komisyonlar" className="py-20">
+                                <div className="text-center max-w-3xl mx-auto mb-16">
+                                    <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">Dokuz Komisyon,<br/>Tek Bir Soru.</h2>
+                                    <p className="text-lg text-slate-600">
+                                        Her komisyon, "Devletin Rolü ve Sorumlulukları" ana temasını kendi disiplininin perspektifinden okur ve müzakerenin sonunda kurula bir taslak sunar.
+                                    </p>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {committees.map((com) => (
+                                        <div key={com.id} className="bg-white border-2 border-[#162a45] p-6 hover:bg-[#162a45] hover:text-white transition-all duration-300 group cursor-pointer relative overflow-hidden">
+                                            <div className="absolute -right-4 -top-4 text-8xl font-serif font-bold text-slate-100 group-hover:text-white/5 transition-colors z-0">
+                                                {com.id}
+                                            </div>
+                                            <div className="relative z-10">
+                                                <i className={`${com.icon} text-4xl mb-6 text-[#162a45] group-hover:text-[#8c9eb1] transition-colors`}></i>
+                                                <h3 className="text-xl font-bold mb-3">{com.title}</h3>
+                                                <p className="text-sm text-slate-600 group-hover:text-white/80 leading-relaxed">
+                                                    {com.desc}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                        </main>
+                    )}
+
+                    {/* FOOTER */}
+                    <footer className="bg-white border-t-2 border-[#162a45] py-12 mt-10">
+                        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                            <div className="flex items-center gap-3">
+                                <img 
+                                    src="https://i.postimg.cc/rsfR3xt6/spektrum.jpg" 
+                                    alt="Spektrum Footer Logo" 
+                                    className="w-10 h-10 object-contain"
+                                />
+                                <div>
+                                    <h2 className="text-lg font-serif font-bold tracking-widest">SPEKTRUM</h2>
+                                    <p className="text-[0.6rem] tracking-widest text-slate-500 uppercase">Siyasal Bilimler Sempozyumu</p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex gap-6 text-sm font-bold text-[#162a45]">
+                                <a href="#" className="hover:text-[#8c9eb1] transition-colors">İLETİŞİM</a>
+                                <a href="#" className="hover:text-[#8c9eb1] transition-colors">SSS</a>
+                                <a href="#" className="hover:text-[#8c9eb1] transition-colors">KAYIT SÜRECİ</a>
+                            </div>
+                        </div>
+                        <div className="text-center text-xs text-slate-500 mt-10 font-mono border-t border-slate-200 pt-6">
+                            &copy; 2026 Spektrum Sempozyumu. İ.Ü. Siyasal Bilgiler Fakültesi. Tüm hakları saklıdır.
+                        </div>
+                    </footer>
                 </div>
-                <h3 className="font-bold text-xl font-serif mb-1">{member.name}</h3>
-                <p className="text-xs text-[#8c9eb1] mb-6 uppercase tracking-wider font-bold text-center h-8">{member.role}</p>
-                <a 
-                  href={`https://instagram.com/${member.instagram}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="mt-auto flex items-center gap-2 text-[#162a45] hover:bg-[#162a45] hover:text-white transition-colors border-2 border-[#162a45] px-4 py-2 text-sm font-bold w-full justify-center"
-                >
-                  <Instagram className="w-5 h-5" /> @{member.instagram}
-                </a>
-              </div>
-            ))}
-          </div>
-        </main>
-      ) : (
-        /* ANA SAYFA İÇERİĞİ */
-        <main className="max-w-7xl mx-auto px-4 md:px-8">
-          
-          {/* HERO SECTION */}
-          <section className="py-16 md:py-24 flex flex-col lg:flex-row items-center gap-12 border-b-2 border-[#162a45]">
-            <div className="flex-1 space-y-8">
-              <div className="inline-flex flex-wrap items-center gap-2 border-2 border-[#162a45] bg-white p-1 pr-4 shadow-[4px_4px_0px_#162a45]">
-                <span className="bg-[#162a45] text-white px-3 py-1 text-xs font-bold tracking-wider">TEMA 2026</span>
-                <span className="text-sm font-bold tracking-wide">Devletin Rolü ve Sorumlulukları</span>
-              </div>
-              
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold leading-[1.1]">
-                Siyaseti <br />
-                <span className="text-transparent" style={{ WebkitTextStroke: '2px #162a45' }}>Yeniden</span> <br />
-                Düşünmek.
-              </h1>
-              
-              <p className="text-lg text-slate-700 max-w-xl border-l-4 border-[#162a45] pl-5 font-medium">
-                Spektrum, eleştirel düşünceyi ve politika analizini merkeze alan genç bir organizatör topluluğudur.
-              </p>
-              
-              <div className="flex flex-wrap items-center gap-4 pt-4">
-                <button className="bg-[#162a45] text-white px-8 py-4 font-bold tracking-wide flex items-center gap-2 hover:bg-[#0f1d30] transition-colors group">
-                  Başvuruyu Tamamla <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </div>
+            );
+        }
 
-            <div className="flex-1 w-full lg:w-auto relative max-w-lg mx-auto">
-              <div className="absolute inset-0 bg-[#8c9eb1]/20 translate-x-4 translate-y-4 border-2 border-[#162a45]"></div>
-              
-              <div className="relative bg-white border-2 border-[#162a45] aspect-square flex flex-col justify-between overflow-hidden text-center shadow-lg group">
-                
-                {/* Tıklanabilir ve Tam Kaplayan Harita Görseli */}
-                <a 
-                  href="https://maps.app.goo.gl/ELTrWvgLe17biP6N7" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="absolute inset-0 z-0 cursor-pointer bg-slate-100"
-                  title="Google Haritalar'da Görüntüle"
-                >
-                  <img 
-                    src="https://i.postimg.cc/jjCT4NRC/wgag-Ekran-Alintisi.png" 
-                    alt="İÜ SBF Konum" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  />
-                </a>
-
-                {/* Üst Metin UI Kutusu */}
-                <div className="relative z-10 bg-white/95 backdrop-blur-sm border-b-2 border-[#162a45] p-5">
-                  <h3 className="font-serif font-bold text-[#162a45] text-sm md:text-base leading-snug">
-                    İstanbul Üniversitesi<br/>Siyasal Bilgiler Fakültesi
-                  </h3>
-                </div>
-                
-                {/* Orta boşluk - Haritanın görünmesi için */}
-                <div className="flex-1 pointer-events-none"></div>
-
-                {/* Alt Metin UI Kutusu */}
-                <div className="relative z-10 bg-white/95 backdrop-blur-sm border-t-2 border-[#162a45] p-5 flex flex-col gap-2 font-mono text-sm font-bold text-left">
-                  <div className="flex justify-between items-center w-full">
-                    <span className="text-[#8c9eb1]">TARİH</span>
-                    <span>25–27 EYLÜL 2026</span>
-                  </div>
-                  <div className="flex justify-between items-center w-full">
-                    <span className="text-[#8c9eb1]">MEKÂN</span>
-                    <span>İ.Ü. SBF</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </section>
-
-          {/* HAKKIMIZDA */}
-          <section id="hakkimizda" className="py-20 border-b-2 border-[#162a45]">
-            <div className="grid md:grid-cols-2 gap-12 items-start">
-              <div>
-                <h2 className="text-4xl font-serif font-bold mb-6">Manifesto</h2>
-                <div className="space-y-4 text-slate-700 text-lg leading-relaxed">
-                  <p>
-                    Akademik disiplinin yöntemini, kamusal meselelerin sıcak gündemiyle bir araya getiren bir zemin kurmayı amaçlıyoruz. 
-                  </p>
-                  <p>
-                    Üç gün boyunca; uzman akademisyenlerin rehberliğinde teorik bir çerçeve inşa ediyor, kriz senaryolarıyla bu çerçeveyi test ediyor ve katılımcıların bizzat kaleme aldığı yasa taslaklarını genel kurulda oylamaya açıyoruz.
-                  </p>
-                </div>
-              </div>
-              <div className="bg-[#162a45] text-white p-8 md:p-12 relative">
-                 <div className="absolute -top-4 -left-4 w-8 h-8 border-t-4 border-l-4 border-[#8c9eb1]"></div>
-                 <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-4 border-r-4 border-[#8c9eb1]"></div>
-                 <h3 className="text-2xl font-serif font-bold mb-4 text-[#8c9eb1]">3 Günlük Serüven</h3>
-                 <p className="text-white/80">Teoriden pratiğe, müzakereden oylamaya uzanan, gerçek dünyaya en yakın simülasyon deneyimi.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* PROGRAM */}
-          <section id="program" className="py-20 border-b-2 border-[#162a45]">
-            <h2 className="text-4xl font-serif font-bold mb-12 text-center">Çalıştay Akışı</h2>
-            
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* GÜN 1 */}
-              <div className="bg-white border-2 border-[#162a45] flex flex-col group hover:-translate-y-2 transition-transform duration-300">
-                <div className="border-b-2 border-[#162a45] p-4 bg-[#f8fafc] flex justify-between items-center">
-                  <span className="font-bold text-xl">GÜN 1</span>
-                  <span className="text-sm font-mono text-[#8c9eb1] font-bold">25 EYLÜL</span>
-                </div>
-                <div className="p-6 flex-1">
-                  <h3 className="text-2xl font-serif font-bold mb-3 group-hover:text-[#8c9eb1] transition-colors">Uzman</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    Akademik açılış konferansları ve teorik zemin. Alanında öncü isimlerden, üç gün boyunca işlenecek tartışmaların kavramsal çerçevesini birlikte kuruyoruz.
-                  </p>
-                </div>
-              </div>
-
-              {/* GÜN 2 */}
-              <div className="bg-[#162a45] text-white border-2 border-[#162a45] flex flex-col group hover:-translate-y-2 transition-transform duration-300 shadow-[8px_8px_0px_#8c9eb1]">
-                <div className="border-b-2 border-white/20 p-4 bg-white/5 flex justify-between items-center">
-                  <span className="font-bold text-xl">GÜN 2</span>
-                  <span className="text-sm font-mono text-[#8c9eb1] font-bold">26 EYLÜL</span>
-                </div>
-                <div className="p-6 flex-1">
-                  <h3 className="text-2xl font-serif font-bold mb-3 text-[#8c9eb1]">Tartışma & Taslak</h3>
-                  <p className="text-white/80 text-sm leading-relaxed">
-                    Kriz senaryoları, komisyon müzakereleri ve yasa taslaklarının kaleme alınması. Katılımcılar, gerçek dünyaya yakın simülasyonlarla hukuki metinler üretiyor.
-                  </p>
-                </div>
-              </div>
-
-              {/* GÜN 3 */}
-              <div className="bg-white border-2 border-[#162a45] flex flex-col group hover:-translate-y-2 transition-transform duration-300">
-                <div className="border-b-2 border-[#162a45] p-4 bg-[#f8fafc] flex justify-between items-center">
-                  <span className="font-bold text-xl">GÜN 3</span>
-                  <span className="text-sm font-mono text-[#8c9eb1] font-bold">27 EYLÜL</span>
-                </div>
-                <div className="p-6 flex-1">
-                  <h3 className="text-2xl font-serif font-bold mb-3 group-hover:text-[#8c9eb1] transition-colors">Genel Oturumlar</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    Komisyon raporlarının sunumu, genel kurul müzakeresi ve oylama. Üç günün ortak çıktısı, meclis onayıyla bir politika belgesine dönüşüyor.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* KOMİSYONLAR */}
-          <section id="komisyonlar" className="py-20">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">Dokuz Komisyon,<br/>Tek Bir Soru.</h2>
-              <p className="text-lg text-slate-600">
-                Her komisyon, "Devletin Rolü ve Sorumlulukları" ana temasını kendi disiplininin perspektifinden okur ve müzakerenin sonunda kurula bir taslak sunar.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {committees.map((com) => (
-                <div key={com.id} className="bg-white border-2 border-[#162a45] p-6 hover:bg-[#162a45] hover:text-white transition-all duration-300 group cursor-pointer relative overflow-hidden">
-                  <div className="absolute -right-4 -top-4 text-8xl font-serif font-bold text-slate-100 group-hover:text-white/5 transition-colors z-0">
-                    {com.id}
-                  </div>
-                  <div className="relative z-10">
-                    <com.icon className="w-10 h-10 mb-6 text-[#162a45] group-hover:text-[#8c9eb1] transition-colors" />
-                    <h3 className="text-xl font-bold mb-3">{com.title}</h3>
-                    <p className="text-sm text-slate-600 group-hover:text-white/80 leading-relaxed">
-                      {com.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-        </main>
-      )}
-
-      {/* FOOTER */}
-      <footer className="bg-white border-t-2 border-[#162a45] py-12 mt-10">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-3">
-            {/* Sizin İlettiğiniz Footer Logosu */}
-            <img 
-              src="https://i.postimg.cc/rsfR3xt6/spektrum.jpg" 
-              alt="Spektrum Footer Logo" 
-              className="w-10 h-10 object-contain"
-            />
-            <div>
-              <h2 className="text-lg font-serif font-bold tracking-widest">SPEKTRUM</h2>
-              <p className="text-[0.6rem] tracking-widest text-slate-500 uppercase">Siyasal Bilimler Sempozyumu</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-6 text-sm font-bold text-[#162a45]">
-            <a href="#" className="hover:text-[#8c9eb1] transition-colors">İLETİŞİM</a>
-            <a href="#" className="hover:text-[#8c9eb1] transition-colors">SSS</a>
-            <a href="#" className="hover:text-[#8c9eb1] transition-colors">KAYIT SÜRECİ</a>
-          </div>
-        </div>
-        <div className="text-center text-xs text-slate-500 mt-10 font-mono border-t border-slate-200 pt-6">
-          &copy; 2026 Spektrum Sempozyumu. İ.Ü. Siyasal Bilgiler Fakültesi. Tüm hakları saklıdır.
-        </div>
-      </footer>
-    </div>
-  );
-}
+        // React uygulamasını ekrana bas
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
