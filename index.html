@@ -41,6 +41,14 @@
         .animate-fade-in-up {
             animation: fadeInUp 0.4s ease-out forwards;
         }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-modal-pop {
+            animation: modalPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
         
         /* Tema Değişimine Duyarlı Grid Arkaplan */
         .bg-grid-pattern {
@@ -65,6 +73,9 @@
             const [textIndex, setTextIndex] = useState(0);
             const [showTeam, setShowTeam] = useState(false);
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+            
+            // Tanıtım videosu modal (pencere) state'i
+            const [showIntroVideo, setShowIntroVideo] = useState(true);
             
             // Koyu Mod State'i
             const [isDarkMode, setIsDarkMode] = useState(false);
@@ -111,7 +122,7 @@
 
             if (isLoading) {
                 return (
-                    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#fafafa] dark:bg-[#0f172a] font-sans selection:bg-[#162a45] selection:text-white transition-colors duration-500">
+                    <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#fafafa] dark:bg-[#0f172a] font-sans selection:bg-[#162a45] selection:text-white transition-colors duration-500 z-[200]">
                         <div className="mb-10 flex flex-col items-center transform transition-transform duration-1000 hover:scale-105">
                             <img 
                                 src="https://res-console.cloudinary.com/dynsqmcjo/thumbnails/transform/v1/image/upload/Y19maWxsLGhfMjAwLHdfMjAw/v1/c3Bla3RydW15YXppc2l6X2plcGx5ZQ==/template_primary" 
@@ -161,6 +172,39 @@
             return (
                 <div className="min-h-screen bg-[#fafafa] dark:bg-[#0f172a] font-sans text-[#162a45] dark:text-[#f8fafc] selection:bg-[#162a45] dark:selection:bg-[#8c9eb1] selection:text-white pb-20 bg-grid-pattern relative transition-colors duration-500">
                     
+                    {/* GİRİŞ TANITIM VİDEOSU (MODAL) */}
+                    {showIntroVideo && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#162a45]/60 dark:bg-[#0f172a]/80 backdrop-blur-sm p-4 transition-all duration-500">
+                            <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 pt-12 relative shadow-[8px_8px_0px_#162a45] dark:shadow-[8px_8px_0px_#8c9eb1] max-w-[450px] w-full flex flex-col items-center animate-modal-pop">
+                                
+                                {/* Kapatma Butonu */}
+                                <button
+                                    onClick={() => setShowIntroVideo(false)}
+                                    className="absolute top-3 right-3 text-[#162a45] dark:text-[#8c9eb1] hover:rotate-90 transition-transform duration-300 w-8 h-8 flex items-center justify-center border-2 border-transparent hover:border-[#162a45] dark:hover:border-[#8c9eb1] bg-[#f8fafc] dark:bg-[#0f172a]"
+                                >
+                                    <i className="fa-solid fa-xmark text-xl"></i>
+                                </button>
+                                
+                                {/* Koyu Mavi Başlık */}
+                                <h2 className="text-[#162a45] dark:text-[#8c9eb1] text-2xl font-serif font-bold mb-6 text-center w-full border-b-2 border-dashed border-[#162a45] dark:border-[#8c9eb1] pb-4 tracking-wide">
+                                    Tanıtım Videomuz
+                                </h2>
+
+                                {/* Instagram iFrame Alanı */}
+                                <div className="w-full flex justify-center bg-slate-50 dark:bg-[#0f172a] border-2 border-[#162a45] dark:border-[#8c9eb1] p-1">
+                                    <iframe 
+                                        src="https://www.instagram.com/reel/DV9Aut7jEQb/embed/" 
+                                        className="w-full aspect-[9/16] max-h-[60vh] md:max-h-[500px]"
+                                        frameBorder="0" 
+                                        scrolling="no" 
+                                        allowTransparency="true" 
+                                        allowFullScreen="true"
+                                    ></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* KOYU MOD BUTONU (Sağ Alt Köşe Animasyonlu) */}
                     <button
                         onClick={() => setIsDarkMode(!isDarkMode)}
