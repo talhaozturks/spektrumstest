@@ -82,6 +82,7 @@
             
             const [showSecretGallery, setShowSecretGallery] = useState(false);
             const [showContactModal, setShowContactModal] = useState(false);
+            const [selectedCommittee, setSelectedCommittee] = useState(null); // Yeni Sınıf UI State'i
             const [galleryIndex, setGalleryIndex] = useState(0);
             const [isDarkMode, setIsDarkMode] = useState(false);
             const [showMapMenu, setShowMapMenu] = useState(false);
@@ -219,14 +220,14 @@
             ];
 
             const teamMembers = [
-                { id: 1, name: "Işıl Işıklı", role: "Kurucu Konferans Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/isil-S9zZFaal.jpg", instagram: "talha.ozturks" },
-                { id: 2, name: "Kaan Yalçın", role: "Organizasyon Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/kaan-C0YLuY5Z.JPG", instagram: "talha.ozturks" },
-                { id: 3, name: "Nisa Nur Zor", role: "Organizasyon Eş Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/nisa-s_pBt2t5.jpg", instagram: "talha.ozturks" },
-                { id: 4, name: "Yaren Yılmaz", role: "Genel Sekreter", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/yaren-DsLrIL5J.jpg", instagram: "talha.ozturks" },
-                { id: 5, name: "Ahmet Tarık Kabasakal", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/ahmet-BQxzsr1Y.jpg", instagram: "talha.ozturks" },
-                { id: 6, name: "Zeynep Uyanık", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/zeynep-nFL2kSKe.jpg", instagram: "talha.ozturks" },
-                { id: 7, name: "Doruk Tibet Çetin", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/doruk-vBg1w4z7.jpg", instagram: "talha.ozturks" },
-                { id: 8, name: "Sare Nisan Danışmaz", role: "IT Başkanı", img: "assets/nisan1.png", instagram: "talha.ozturks" },
+                { id: 1, name: "Işıl Işıklı", role: "Kurucu Konferans Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/isil-S9zZFaal.jpg", instagram: "spektrumsiyasalbilimler" },
+                { id: 2, name: "Kaan Yalçın", role: "Organizasyon Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/kaan-C0YLuY5Z.JPG", instagram: "spektrumsiyasalbilimler" },
+                { id: 3, name: "Nisa Nur Zor", role: "Organizasyon Eş Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/nisa-s_pBt2t5.jpg", instagram: "spektrumsiyasalbilimler" },
+                { id: 4, name: "Yaren Yılmaz", role: "Genel Sekreter", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/yaren-DsLrIL5J.jpg", instagram: "spektrumsiyasalbilimler" },
+                { id: 5, name: "Ahmet Tarık Kabasakal", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/ahmet-BQxzsr1Y.jpg", instagram: "spektrumsiyasalbilimler" },
+                { id: 6, name: "Zeynep Uyanık", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/zeynep-nFL2kSKe.jpg", instagram: "spektrumsiyasalbilimler" },
+                { id: 7, name: "Doruk Tibet Çetin", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/doruk-vBg1w4z7.jpg", instagram: "spektrumsiyasalbilimler" },
+                { id: 8, name: "Sare Nisan Danışmaz", role: "IT Başkanı", img: "assets/nisan1.png", instagram: "spektrumsiyasalbilimler" },
             ];
 
             return (
@@ -269,7 +270,7 @@
                                     <img 
                                         src="assets/spektrumyazisiz.png" 
                                         alt="Spektrum Logo" 
-                                        className="w-16 h-16 object-contain drop-shadow-sm" 
+                                        className="w-16 h-16 object-contain drop-shadow-sm opacity-90" 
                                     />
                                 </div>
 
@@ -347,6 +348,65 @@
                                             <i className="fa-brands fa-instagram"></i> Sayfaya Git
                                         </a>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* KOMİSYON SINIF EKRANI (YENİ) */}
+                    {selectedCommittee && (
+                        <div 
+                            className="fixed inset-0 z-[500] animate-fade-in-up flex flex-col justify-between overflow-hidden bg-[#162a45]"
+                            style={{ 
+                                backgroundImage: `url('assets/sinif1.png')`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
+                            }}
+                        >
+                            <div className="absolute inset-0 bg-white/20 dark:bg-black/20 backdrop-blur-[1px]"></div>
+                            
+                            <button
+                                onClick={() => setSelectedCommittee(null)}
+                                className="absolute top-4 right-4 md:top-6 md:right-6 z-50 text-[#162a45] hover:text-white bg-white hover:bg-red-600 transition-colors w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border-4 border-[#162a45] shadow-[4px_4px_0px_#162a45]"
+                            >
+                                <i className="fa-solid fa-xmark text-xl md:text-2xl"></i>
+                            </button>
+
+                            {/* Tahta Üzerindeki Komisyon Adı */}
+                            <div className="relative z-10 w-full flex justify-center px-4 pt-[15vh] md:pt-[22vh]">
+                                <div className="max-w-xs md:max-w-3xl text-center bg-[#fafafa]/80 dark:bg-[#1e293b]/90 p-3 md:p-5 border-2 md:border-4 border-dashed border-[#162a45] dark:border-[#8c9eb1] shadow-xl backdrop-blur-md transform -rotate-1 hover:rotate-0 transition-transform">
+                                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-[#162a45] dark:text-white tracking-wide">
+                                        {selectedCommittee.title}
+                                    </h2>
+                                </div>
+                            </div>
+
+                            {/* Başkanlar (Sol Kaan, Sağ Işıl) */}
+                            <div className="relative z-10 w-full flex justify-between items-end px-4 md:px-16 pb-4 md:pb-8">
+                                
+                                {/* Sol Başkan - Kaan */}
+                                <div className="flex flex-col items-center animate-float-slow transform origin-bottom hover:scale-105 transition-transform">
+                                    <div className="bg-[#fafafa] dark:bg-[#1e293b] border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] p-2 md:p-3 mb-3 md:mb-5 text-center shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] relative">
+                                        <p className="font-bold text-[#162a45] dark:text-white text-sm md:text-xl font-serif tracking-widest">{selectedCommittee.id === "01" ? "Kaan YALÇIN" : "Kaan YALÇIN"}</p>
+                                        <p className="text-[10px] md:text-sm text-[#8c9eb1] font-mono font-bold mt-1 uppercase">Oturum Başkanı</p>
+                                        {/* Baloncuk Ucu */}
+                                        <div className="absolute -bottom-[10px] md:-bottom-[14px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] md:border-l-[12px] border-l-transparent border-t-[10px] md:border-t-[14px] border-t-[#162a45] dark:border-t-[#8c9eb1] border-r-[8px] md:border-r-[12px] border-r-transparent"></div>
+                                        <div className="absolute -bottom-[6px] md:-bottom-[8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] md:border-l-[8px] border-l-transparent border-t-[8px] md:border-t-[10px] border-t-[#fafafa] dark:border-t-[#1e293b] border-r-[6px] md:border-r-[8px] border-r-transparent"></div>
+                                    </div>
+                                    <img src="assets/kaankonusuyor.png" alt="Kaan" className="w-32 h-32 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain object-bottom drop-shadow-[0_20px_20px_rgba(0,0,0,0.5)]" />
+                                </div>
+
+                                {/* Sağ Başkan - Işıl */}
+                                <div className="flex flex-col items-center animate-float-slow transform origin-bottom hover:scale-105 transition-transform" style={{ animationDelay: '1s' }}>
+                                    <div className="bg-[#fafafa] dark:bg-[#1e293b] border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] p-2 md:p-3 mb-3 md:mb-5 text-center shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] relative">
+                                        <p className="font-bold text-[#162a45] dark:text-white text-sm md:text-xl font-serif tracking-widest">Işıl IŞIKLI</p>
+                                        <p className="text-[10px] md:text-sm text-[#8c9eb1] font-mono font-bold mt-1 uppercase">2. Oturum Başkanı</p>
+                                        {/* Baloncuk Ucu */}
+                                        <div className="absolute -bottom-[10px] md:-bottom-[14px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] md:border-l-[12px] border-l-transparent border-t-[10px] md:border-t-[14px] border-t-[#162a45] dark:border-t-[#8c9eb1] border-r-[8px] md:border-r-[12px] border-r-transparent"></div>
+                                        <div className="absolute -bottom-[6px] md:-bottom-[8px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] md:border-l-[8px] border-l-transparent border-t-[8px] md:border-t-[10px] border-t-[#fafafa] dark:border-t-[#1e293b] border-r-[6px] md:border-r-[8px] border-r-transparent"></div>
+                                    </div>
+                                    <img src="assets/aaisil-S9zZFaal.png" alt="Işıl" className="w-32 h-32 md:w-64 md:h-64 lg:w-80 lg:h-80 object-contain object-bottom drop-shadow-[0_20px_20px_rgba(0,0,0,0.5)]" />
                                 </div>
                             </div>
                         </div>
@@ -719,7 +779,11 @@
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {committees.map((com) => (
-                                        <div key={com.id} className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] transition-all duration-300 group cursor-pointer relative overflow-hidden">
+                                        <div 
+                                            key={com.id} 
+                                            onClick={() => setSelectedCommittee(com)}
+                                            className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] transition-all duration-300 group cursor-pointer relative overflow-hidden"
+                                        >
                                             <div className="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-7xl md:text-8xl font-serif font-bold text-slate-100 dark:text-slate-800 group-hover:text-white/5 dark:group-hover:text-[#0f172a]/10 transition-colors duration-500 z-0">
                                                 {com.id}
                                             </div>
