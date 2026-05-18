@@ -356,6 +356,31 @@
                     {/* KOMİSYON SINIF EKRANI */}
                     {selectedCommittee && (
                         <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 transition-all duration-500 animate-fade-in-up">
+                            
+                            <button 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    const currentIndex = committees.findIndex(c => c.id === selectedCommittee.id);
+                                    const prevIndex = currentIndex === 0 ? committees.length - 1 : currentIndex - 1;
+                                    setSelectedCommittee(committees[prevIndex]);
+                                }}
+                                className="absolute left-2 md:left-6 lg:left-10 top-1/2 -translate-y-1/2 bg-[#fafafa] dark:bg-[#1e293b] border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] text-[#162a45] dark:text-[#f8fafc] hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] transition-all z-[600]"
+                            >
+                                <i className="fa-solid fa-chevron-left text-lg md:text-2xl"></i>
+                            </button>
+
+                            <button 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    const currentIndex = committees.findIndex(c => c.id === selectedCommittee.id);
+                                    const nextIndex = currentIndex === committees.length - 1 ? 0 : currentIndex + 1;
+                                    setSelectedCommittee(committees[nextIndex]);
+                                }}
+                                className="absolute right-2 md:right-6 lg:right-10 top-1/2 -translate-y-1/2 bg-[#fafafa] dark:bg-[#1e293b] border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] text-[#162a45] dark:text-[#f8fafc] hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] w-10 h-10 md:w-14 md:h-14 flex items-center justify-center shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] transition-all z-[600]"
+                            >
+                                <i className="fa-solid fa-chevron-right text-lg md:text-2xl"></i>
+                            </button>
+
                             <div 
                                 className="relative w-full max-w-6xl aspect-[4/3] md:aspect-[16/9] bg-[#fafafa] dark:bg-[#0f172a] border-4 border-[#162a45] dark:border-[#8c9eb1] shadow-[8px_8px_0px_#162a45] dark:shadow-[8px_8px_0px_#8c9eb1] overflow-hidden flex flex-col"
                                 style={{ 
