@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spektrum Siyasal Bilimler Sempozyumu</title>
+    <link rel="icon" href="assets/spektrum.png" type="image/png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -63,6 +64,7 @@
     </style>
 </head>
 <body class="transition-colors duration-500 bg-[#fafafa] dark:bg-[#0f172a]">
+    
     <div id="root"></div>
 
     <script type="text/babel">
@@ -79,6 +81,10 @@
             const [galleryIndex, setGalleryIndex] = useState(0);
             const [isDarkMode, setIsDarkMode] = useState(false);
             const [showMapMenu, setShowMapMenu] = useState(false);
+
+            useEffect(() => {
+                console.log("%cTalha tarafından yapıldı kopyalanması yasaktır.", "color: #e11d48; font-size: 16px; font-weight: bold; border: 2px solid #e11d48; padding: 10px; border-radius: 5px;");
+            }, []);
 
             const calculateTimeLeft = () => {
                 const targetDate = new Date('2026-09-25T00:00:00');
@@ -278,10 +284,10 @@
                                     <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-slate-50 dark:bg-[#0f172a] border-2 border-[#162a45] dark:border-[#8c9eb1] shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1]">
                                         <div className="flex flex-col items-center md:items-start text-center md:text-left">
                                             <span className="text-xs text-[#8c9eb1] font-bold tracking-widest uppercase mb-1">Instagram</span>
-                                            <span className="text-[#162a45] dark:text-[#f8fafc] font-mono text-xs sm:text-sm font-bold break-all">@spektrumyasalbilimler</span>
+                                            <span className="text-[#162a45] dark:text-[#f8fafc] font-mono text-xs sm:text-sm font-bold break-all">@spektrumsiyasalbilimler</span>
                                         </div>
                                         <a 
-                                            href="https://instagram.com/spektrumyasalbilimler" 
+                                            href="https://instagram.com/spektrumsiyasalbilimler" 
                                             target="_blank" 
                                             rel="noopener noreferrer"
                                             className="shrink-0 bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-4 py-2 font-bold text-sm hover:bg-[#0f1d30] dark:hover:bg-white transition-colors flex items-center gap-2 border-2 border-transparent dark:hover:border-[#0f172a]"
@@ -372,6 +378,10 @@
                                         <h2 className="text-sm md:text-xl font-serif font-bold tracking-widest leading-none">SPEKTRUM</h2>
                                         <span className="text-[0.45rem] md:text-[0.6rem] tracking-widest text-[#8c9eb1] uppercase">Sempozyumu</span>
                                     </div>
+                                    <div className="flex flex-col mt-0.5 max-w-[180px] sm:max-w-none overflow-hidden">
+                                        <span className="text-[0.45rem] md:text-[0.55rem] font-mono text-slate-500 dark:text-slate-400 font-bold tracking-wide truncate">spektrumyasalbilimleryk@gmail.com</span>
+                                        <span className="text-[0.45rem] md:text-[0.55rem] font-mono text-slate-500 dark:text-slate-400 font-bold tracking-wide truncate">@spektrumsiyasalbilimler</span>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -381,7 +391,6 @@
                                 <a href="#program" className="transition-colors hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1] dark:hover:text-white" onClick={() => setShowTeam(false)}>PROGRAM</a>
                                 <button onClick={() => setShowTeam(true)} className={`transition-colors ${showTeam ? 'border-b-2 border-[#162a45] dark:border-white pb-1 font-bold text-[#162a45] dark:text-white' : 'hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1]'}`}>KADROMUZ</button>
                                 
-                                {/* Masaüstü Zarf İkonu */}
                                 <button 
                                     onClick={() => setShowContactModal(true)} 
                                     className="w-10 h-10 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#1e293b] text-[#162a45] dark:text-[#f8fafc] flex items-center justify-center shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1] hover:-translate-y-0.5 transition-transform" 
@@ -396,7 +405,6 @@
                             </div>
 
                             <div className="md:hidden flex items-center gap-3">
-                                {/* Mobil Zarf İkonu */}
                                 <button 
                                     onClick={() => setShowContactModal(true)} 
                                     className="w-9 h-9 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#1e293b] text-[#162a45] dark:text-[#f8fafc] flex items-center justify-center shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1] active:translate-y-0.5 transition-transform"
@@ -702,7 +710,7 @@
                             </div>
                         </div>
                         <div className="text-center text-[0.65rem] md:text-xs text-slate-500 dark:text-slate-400 mt-8 md:mt-10 font-mono border-t border-slate-200 dark:border-slate-700 pt-6 px-4 transition-colors duration-500">
-                            &copy; 2026 Spektrum Sempozyumu. İ.Ü. Siyasal Bilgiler Fakültesi. Tüm hakları saklıdır.
+                            © 2026 Spektrum Sempozyumu. İ.Ü. Siyasal Bilgiler Fakültesi. Tüm hakları saklıdır.
                         </div>
                     </footer>
                 </div>
