@@ -75,6 +75,7 @@
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             const [showIntroVideo, setShowIntroVideo] = useState(true);
             const [showSecretGallery, setShowSecretGallery] = useState(false);
+            const [showContactModal, setShowContactModal] = useState(false);
             const [galleryIndex, setGalleryIndex] = useState(0);
             const [isDarkMode, setIsDarkMode] = useState(false);
             const [showMapMenu, setShowMapMenu] = useState(false);
@@ -144,28 +145,7 @@
                 };
             }, [isLoading]);
 
-            const committees = [
-                { id: "01", title: "Siyasal Ekonomi", icon: "fa-solid fa-scale-balanced", desc: "Sermayenin dinamikleri ile kamusal refahın sınırları. Kriz anlarında devletin müdahale araçları, gelir dağılımı adaletsizliği ve sürdürülebilir büyümenin ekonomi-politiği masaya yatırılıyor." },
-                { id: "02", title: "Çevre Politikaları", icon: "fa-solid fa-leaf", desc: "Doğa bir kaynak mıdır, yoksa korunması gereken bir özne mi? Antroposen çağında ekolojik yıkıma karşı devletin regülasyon kapasitesi ve yeşil politikaların anayasal inşası tartışılıyor." },
-                { id: "03", title: "Sağlık Politikaları", icon: "fa-solid fa-heart-pulse", desc: "Biyopolitika ekseninde yaşam hakkı. Toplum sağlığının güvence altına alınmasında devletin rasyonalitesi, evrensel erişim ve kriz anlarında etik önceliklerin belirlenmesi." },
-                { id: "04", title: "Eğitim Politikaları", icon: "fa-solid fa-lightbulb", desc: "İdeal yurttaşın inşasından, eleştirel aklın özgürleşmesine. Fırsat eşitliğinin sağlanması, eğitimde ideolojik aygıtların rolü ve geleceğin müfredat politikaları mercek altında." },
-                { id: "05", title: "Siyasal Hukuk", icon: "fa-solid fa-gavel", desc: "Normun ve istisnanın çatışması. Hukuk devletinin sınırları, anayasal güvencelerin esnekliği ve yürütme gücünün sınırlandırılmasında yargısal mekanizmaların işlevselliği." },
-                { id: "06", title: "İnsan Hakları", icon: "fa-solid fa-shield-halved", desc: "Leviathan'a karşı bireyin kalkanı. Güvenlik ve özgürlük ikileminde temel hakların korunması, devletin müdahale alanının daraltılması ve evrensel normların yerel dinamiklerle sınavı." },
-                { id: "07", title: "Siyasette Sosyoloji", icon: "fa-solid fa-users", desc: "Toplumun fay hatları. Kolektif belleğin inşası, kamusal alanın kimlikler arası müzakereye açılması ve devletin farklılıkları yönetme pratiklerinin eleştirel analizi." },
-                { id: "08", title: "Uluslararası İlişkiler", icon: "fa-solid fa-globe", desc: "Küresel anarşi ve gücün mimarisi. Ulus-devlet egemenliğinin aşınması, yeni hegemonya mücadeleleri ve çok kutuplu dünyada diplomasi ve ittifakların yeniden tanımlanması." },
-                { id: "09", title: "Gündem", icon: "fa-solid fa-triangle-exclamation", desc: "Öngörülemeyeni yönetmek. Ani gelişen küresel ve yerel kriz senaryoları karşısında devlet refleksleri, risk yönetimi ve acil durum politikalarının simülasyon tabanlı stratejik analizi." },
-            ];
-
-            const teamMembers = [
-                { id: 1, name: "Işıl Işıklı", role: "Kurucu Konferans Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/isil-S9zZFaal.jpg", instagram: "talha.ozturks" },
-                { id: 2, name: "Kaan Yalçın", role: "Organizasyon Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/kaan-C0YLuY5Z.JPG", instagram: "talha.ozturks" },
-                { id: 3, name: "Nisa Nur Zor", role: "Organizasyon Eş Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/nisa-s_pBt2t5.jpg", instagram: "talha.ozturks" },
-                { id: 4, name: "Yaren Yılmaz", role: "Genel Sekreter", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/yaren-DsLrIL5J.jpg", instagram: "talha.ozturks" },
-                { id: 5, name: "Ahmet Tarık Kabasakal", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/ahmet-BQxzsr1Y.jpg", instagram: "talha.ozturks" },
-                { id: 6, name: "Zeynep Uyanık", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/zeynep-nFL2kSKe.jpg", instagram: "talha.ozturks" },
-                { id: 7, name: "Doruk Tibet Çetin", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/doruk-vBg1w4z7.jpg", instagram: "talha.ozturks" },
-                { id: 8, name: "Sare Nisan Danışmaz", role: "IT Başkanı", img: "assets/nisan1.png", instagram: "talha.ozturks" },
-            ];
+            const mailBodyText = "Merhaba Spektrum Siyasal Bilimler hakkında daha çok bilgi almak istiyorum…";
 
             if (isLoading) {
                 return (
@@ -211,6 +191,29 @@
                 );
             }
 
+            const committees = [
+                { id: "01", title: "Siyasal Ekonomi", icon: "fa-solid fa-scale-balanced", desc: "Sermayenin dinamikleri ile kamusal refahın sınırları. Kriz anlarında devletin müdahale araçları, gelir dağılımı adaletsizliği ve sürdürülebilir büyümenin ekonomi-politiği masaya yatırılıyor." },
+                { id: "02", title: "Çevre Politikaları", icon: "fa-solid fa-leaf", desc: "Doğa bir kaynak mıdır, yoksa korunması gereken bir özne mi? Antroposen çağında ekolojik yıkıma karşı devletin regülasyon kapasitesi ve yeşil politikaların anayasal inşası tartışılıyor." },
+                { id: "03", title: "Sağlık Politikaları", icon: "fa-solid fa-heart-pulse", desc: "Biyopolitika ekseninde yaşam hakkı. Toplum sağlığının güvence altına alınmasında devletin rasyonalitesi, evrensel erişim ve kriz anlarında etik önceliklerin belirlenmesi." },
+                { id: "04", title: "Eğitim Politikaları", icon: "fa-solid fa-lightbulb", desc: "İdeal yurttaşın inşasından, eleştirel aklın özgürleşmesine. Fırsat eşitliğinin sağlanması, eğitimde ideolojik aygıtların rolü ve geleceğin müfredat politikaları mercek altında." },
+                { id: "05", title: "Siyasal Hukuk", icon: "fa-solid fa-gavel", desc: "Normun ve istisnanın çatışması. Hukuk devletinin sınırları, anayasal güvencelerin esnekliği ve yürütme gücünün sınırlandırılmasında yargısal mekanizmaların işlevselliği." },
+                { id: "06", title: "İnsan Hakları", icon: "fa-solid fa-shield-halved", desc: "Leviathan'a karşı bireyin kalkanı. Güvenlik ve özgürlük ikileminde temel hakların korunması, devletin müdahale alanının daraltılması ve evrensel normların yerel dinamiklerle sınavı." },
+                { id: "07", title: "Siyasette Sosyoloji", icon: "fa-solid fa-users", desc: "Toplumun fay hatları. Kolektif belleğin inşası, kamusal alanın kimlikler arası müzakereye açılması ve devletin farklılıkları yönetme pratiklerinin eleştirel analizi." },
+                { id: "08", title: "Uluslararası İlişkiler", icon: "fa-solid fa-globe", desc: "Küresel anarşi ve gücün mimarisi. Ulus-devlet egemenliğinin aşınması, yeni hegemonya mücadeleleri ve çok kutuplu dünyada diplomasi ve ittifakların yeniden tanımlanması." },
+                { id: "09", title: "Gündem", icon: "fa-solid fa-triangle-exclamation", desc: "Öngörülemeyeni yönetmek. Ani gelişen küresel ve yerel kriz senaryoları karşısında devlet refleksleri, risk yönetimi ve acil durum politikalarının simülasyon tabanlı stratejik analizi." },
+            ];
+
+            const teamMembers = [
+                { id: 1, name: "Işıl Işıklı", role: "Kurucu Konferans Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/isil-S9zZFaal.jpg", instagram: "talha.ozturks" },
+                { id: 2, name: "Kaan Yalçın", role: "Organizasyon Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/kaan-C0YLuY5Z.JPG", instagram: "talha.ozturks" },
+                { id: 3, name: "Nisa Nur Zor", role: "Organizasyon Eş Başkanı", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/nisa-s_pBt2t5.jpg", instagram: "talha.ozturks" },
+                { id: 4, name: "Yaren Yılmaz", role: "Genel Sekreter", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/yaren-DsLrIL5J.jpg", instagram: "talha.ozturks" },
+                { id: 5, name: "Ahmet Tarık Kabasakal", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/ahmet-BQxzsr1Y.jpg", instagram: "talha.ozturks" },
+                { id: 6, name: "Zeynep Uyanık", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/zeynep-nFL2kSKe.jpg", instagram: "talha.ozturks" },
+                { id: 7, name: "Doruk Tibet Çetin", role: "Akademik Direktör", img: "https://spektrum-siyasal-bilimler.vercel.app/assets/doruk-vBg1w4z7.jpg", instagram: "talha.ozturks" },
+                { id: 8, name: "Sare Nisan Danışmaz", role: "IT Başkanı", img: "assets/nisan1.png", instagram: "talha.ozturks" },
+            ];
+
             return (
                 <div className="min-h-screen bg-[#fafafa] dark:bg-[#0f172a] font-sans text-[#162a45] dark:text-[#f8fafc] selection:bg-[#162a45] dark:selection:bg-[#8c9eb1] selection:text-white pb-20 bg-grid-pattern relative transition-colors duration-500">
                     
@@ -238,6 +241,54 @@
                                         allowTransparency="true" 
                                         allowFullScreen="true"
                                     ></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {showContactModal && (
+                        <div className="fixed inset-0 z-[400] flex items-center justify-center bg-[#162a45]/60 dark:bg-[#0f172a]/80 backdrop-blur-sm p-4 transition-all duration-500 animate-fade-in-up">
+                            <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 pt-12 relative shadow-[8px_8px_0px_#162a45] dark:shadow-[8px_8px_0px_#8c9eb1] max-w-[500px] w-full flex flex-col items-center animate-modal-pop">
+                                
+                                <button
+                                    onClick={() => setShowContactModal(false)}
+                                    className="absolute top-3 right-3 text-[#162a45] dark:text-[#8c9eb1] hover:rotate-90 transition-transform duration-300 w-8 h-8 flex items-center justify-center border-2 border-transparent hover:border-[#162a45] dark:hover:border-[#8c9eb1] bg-[#f8fafc] dark:bg-[#0f172a]"
+                                >
+                                    <i className="fa-solid fa-xmark text-xl"></i>
+                                </button>
+                                
+                                <h2 className="text-[#162a45] dark:text-[#8c9eb1] text-2xl font-serif font-bold mb-6 text-center w-full border-b-2 border-dashed border-[#162a45] dark:border-[#8c9eb1] pb-4 tracking-wide uppercase">
+                                    İletişim
+                                </h2>
+
+                                <div className="w-full flex flex-col gap-5">
+                                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-slate-50 dark:bg-[#0f172a] border-2 border-[#162a45] dark:border-[#8c9eb1] shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1]">
+                                        <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                                            <span className="text-xs text-[#8c9eb1] font-bold tracking-widest uppercase mb-1">E-Posta</span>
+                                            <span className="text-[#162a45] dark:text-[#f8fafc] font-mono text-xs sm:text-sm font-bold break-all">spektrumyasalbilimleryk@gmail.com</span>
+                                        </div>
+                                        <a 
+                                            href={`mailto:spektrumyasalbilimleryk@gmail.com?subject=Bilgi Talebi&body=${encodeURIComponent(mailBodyText)}`} 
+                                            className="shrink-0 bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-4 py-2 font-bold text-sm hover:bg-[#0f1d30] dark:hover:bg-white transition-colors flex items-center gap-2 border-2 border-transparent dark:hover:border-[#0f172a]"
+                                        >
+                                            <i className="fa-solid fa-paper-plane"></i> Posta Gönder
+                                        </a>
+                                    </div>
+
+                                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-slate-50 dark:bg-[#0f172a] border-2 border-[#162a45] dark:border-[#8c9eb1] shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1]">
+                                        <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                                            <span className="text-xs text-[#8c9eb1] font-bold tracking-widest uppercase mb-1">Instagram</span>
+                                            <span className="text-[#162a45] dark:text-[#f8fafc] font-mono text-xs sm:text-sm font-bold break-all">@spektrumyasalbilimler</span>
+                                        </div>
+                                        <a 
+                                            href="https://instagram.com/spektrumyasalbilimler" 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="shrink-0 bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-4 py-2 font-bold text-sm hover:bg-[#0f1d30] dark:hover:bg-white transition-colors flex items-center gap-2 border-2 border-transparent dark:hover:border-[#0f172a]"
+                                        >
+                                            <i className="fa-brands fa-instagram"></i> Sayfaya Git
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -321,24 +372,37 @@
                                         <h2 className="text-sm md:text-xl font-serif font-bold tracking-widest leading-none">SPEKTRUM</h2>
                                         <span className="text-[0.45rem] md:text-[0.6rem] tracking-widest text-[#8c9eb1] uppercase">Sempozyumu</span>
                                     </div>
-                                    <div className="flex flex-col mt-0.5 max-w-[180px] sm:max-w-none overflow-hidden">
-                                        <span className="text-[0.45rem] md:text-[0.55rem] font-mono text-slate-500 dark:text-slate-400 font-bold tracking-wide truncate">spektrumyasalbilimleryk@gmail.com</span>
-                                        <span className="text-[0.45rem] md:text-[0.55rem] font-mono text-slate-500 dark:text-slate-400 font-bold tracking-wide truncate">@spektrumyasalbilimler</span>
-                                    </div>
                                 </div>
                             </div>
                             
-                            <div className="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide">
+                            <div className="hidden md:flex items-center gap-5 lg:gap-8 font-medium text-sm tracking-wide">
                                 <button onClick={() => setShowTeam(false)} className={`transition-colors ${!showTeam ? 'font-bold text-[#162a45] dark:text-white' : 'hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1]'}`}>ANA SAYFA</button>
                                 <a href="#hakkimizda" className="transition-colors hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1] dark:hover:text-white" onClick={() => setShowTeam(false)}>HAKKIMIZDA</a>
                                 <a href="#program" className="transition-colors hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1] dark:hover:text-white" onClick={() => setShowTeam(false)}>PROGRAM</a>
                                 <button onClick={() => setShowTeam(true)} className={`transition-colors ${showTeam ? 'border-b-2 border-[#162a45] dark:border-white pb-1 font-bold text-[#162a45] dark:text-white' : 'hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1]'}`}>KADROMUZ</button>
+                                
+                                {/* Masaüstü Zarf İkonu */}
+                                <button 
+                                    onClick={() => setShowContactModal(true)} 
+                                    className="w-10 h-10 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#1e293b] text-[#162a45] dark:text-[#f8fafc] flex items-center justify-center shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1] hover:-translate-y-0.5 transition-transform" 
+                                    title="İletişim"
+                                >
+                                    <i className="fa-regular fa-envelope text-lg"></i>
+                                </button>
+
                                 <button className="border-2 border-[#162a45] dark:border-[#8c9eb1] px-6 py-2 hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] transition-colors duration-300 font-bold">
                                     KAYIT OL
                                 </button>
                             </div>
 
-                            <div className="md:hidden flex items-center">
+                            <div className="md:hidden flex items-center gap-3">
+                                {/* Mobil Zarf İkonu */}
+                                <button 
+                                    onClick={() => setShowContactModal(true)} 
+                                    className="w-9 h-9 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#1e293b] text-[#162a45] dark:text-[#f8fafc] flex items-center justify-center shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1] active:translate-y-0.5 transition-transform"
+                                >
+                                    <i className="fa-regular fa-envelope text-base"></i>
+                                </button>
                                 <button 
                                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
                                     className="text-[#162a45] dark:text-[#f8fafc] p-2 focus:outline-none"
