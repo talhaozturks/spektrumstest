@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,12 +84,29 @@
             const [showContactModal, setShowContactModal] = useState(false);
             const [selectedCommittee, setSelectedCommittee] = useState(null); 
             const [galleryIndex, setGalleryIndex] = useState(0);
-            const [isDarkMode, setIsDarkMode] = useState(false);
+            const [isDarkMode, setIsDarkMode] = useState(true); // Site otomatik koyu modda başlar
             const [showMapMenu, setShowMapMenu] = useState(false);
+
+            // Koyu Mod Bildirim State'leri
+            const [showDarkModeToast, setShowDarkModeToast] = useState(false);
+            const [hasShownToast, setHasShownToast] = useState(false);
 
             useEffect(() => {
                 console.log("%cTalha tarafından yapıldı kopyalanması yasaktır.", "color: #e11d48; font-size: 16px; font-weight: bold; border: 2px solid #e11d48; padding: 10px; border-radius: 5px;");
             }, []);
+
+            // Ana ekrana gelince bildirimi gösteren Effect
+            useEffect(() => {
+                if (!isLoading && !showIntroVideo && !showTermsModal && !hasShownToast) {
+                    setHasShownToast(true);
+                    setTimeout(() => {
+                        setShowDarkModeToast(true);
+                        setTimeout(() => {
+                            setShowDarkModeToast(false);
+                        }, 3000);
+                    }, 500);
+                }
+            }, [isLoading, showIntroVideo, showTermsModal, hasShownToast]);
 
             const calculateTimeLeft = () => {
                 const targetDate = new Date('2026-09-25T00:00:00');
@@ -533,16 +550,28 @@
                         </div>
                     )}
 
-                    <button
-                        onClick={() => setIsDarkMode(!isDarkMode)}
-                        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-[#162a45] dark:bg-[#1e293b] border-2 border-transparent dark:border-[#8c9eb1] text-white dark:text-[#8c9eb1] shadow-xl flex items-center justify-center transition-all duration-500 z-50 hover:scale-110 overflow-hidden"
-                        title={isDarkMode ? "Açık Moda Geç" : "Koyu Moda Geç"}
-                    >
-                        <div className={`relative flex items-center justify-center w-full h-full transition-transform duration-700 ${isDarkMode ? 'rotate-[360deg]' : 'rotate-0'}`}>
-                            <i className={`fa-solid fa-sun absolute transition-all duration-500 text-2xl ${isDarkMode ? 'opacity-100 scale-100' : 'opacity-0 scale-50 -rotate-90'}`}></i>
-                            <i className={`fa-solid fa-moon absolute transition-all duration-500 text-2xl ${!isDarkMode ? 'opacity-100 scale-100' : 'opacity-0 scale-50 rotate-90'}`}></i>
+                    {/* Koyu Mod Bildirimi ve Butonu */}
+                    <div className="fixed bottom-6 right-6 z-[600] flex flex-col items-end gap-3 pointer-events-none">
+                        {/* Bildirim Baloncuğu */}
+                        <div className={`transition-all duration-500 transform ${showDarkModeToast ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                            <div className="bg-[#fafafa] dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] text-[#162a45] dark:text-[#f8fafc] px-4 py-2 rounded-xl shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] font-serif font-bold text-xs md:text-sm tracking-wide">
+                                Otomatik Koyu Mod Açıldı!
+                                <div className="absolute -bottom-[6px] right-5 w-3 h-3 bg-[#fafafa] dark:bg-[#1e293b] border-b-2 border-r-2 border-[#162a45] dark:border-[#8c9eb1] transform rotate-45"></div>
+                            </div>
                         </div>
-                    </button>
+
+                        {/* Koyu Mod Geçiş Butonu */}
+                        <button
+                            onClick={() => setIsDarkMode(!isDarkMode)}
+                            className="w-14 h-14 rounded-full bg-[#162a45] dark:bg-[#1e293b] border-2 border-transparent dark:border-[#8c9eb1] text-white dark:text-[#8c9eb1] shadow-xl flex items-center justify-center transition-all duration-500 hover:scale-110 overflow-hidden pointer-events-auto"
+                            title={isDarkMode ? "Açık Moda Geç" : "Koyu Moda Geç"}
+                        >
+                            <div className={`relative flex items-center justify-center w-full h-full transition-transform duration-700 ${isDarkMode ? 'rotate-[360deg]' : 'rotate-0'}`}>
+                                <i className={`fa-solid fa-sun absolute transition-all duration-500 text-2xl ${isDarkMode ? 'opacity-100 scale-100' : 'opacity-0 scale-50 -rotate-90'}`}></i>
+                                <i className={`fa-solid fa-moon absolute transition-all duration-500 text-2xl ${!isDarkMode ? 'opacity-100 scale-100' : 'opacity-0 scale-50 rotate-90'}`}></i>
+                            </div>
+                        </button>
+                    </div>
 
                     <nav className="sticky top-0 z-40 bg-[#fafafa]/95 dark:bg-[#0f172a]/95 backdrop-blur-sm border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
                         <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
