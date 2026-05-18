@@ -10,46 +10,65 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            main: '#162a45',
+                            light: '#2a4165',
+                            accent: '#8c9eb1'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
         :root {
-            --grid-color: #e5e7eb;
+            --grid-color: rgba(22, 42, 69, 0.03);
         }
         .dark {
-            --grid-color: #1e293b;
+            --grid-color: rgba(255, 255, 255, 0.02);
         }
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in-up {
-            animation: fadeInUp 0.4s ease-out forwards;
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            from { opacity: 0; transform: scale(0.98) translateY(10px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .animate-modal-pop {
             animation: modalPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes floatSlow {
-            0%, 100% { transform: translateY(0) rotate(2deg); }
-            50% { transform: translateY(-10px) rotate(-1deg); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
         .animate-float-slow {
             animation: floatSlow 4s ease-in-out infinite;
         }
         @keyframes heartbeat {
             0%, 100% { transform: scale(1); }
-            15% { transform: scale(1.25); }
+            15% { transform: scale(1.15); }
             30% { transform: scale(1); }
-            45% { transform: scale(1.25); }
+            45% { transform: scale(1.15); }
             60% { transform: scale(1); }
         }
         .animate-heartbeat {
@@ -57,13 +76,33 @@
         }
         .bg-grid-pattern {
             background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-size: 32px 32px;
             background-position: -1px -1px;
             transition: background-image 0.5s ease-in-out;
         }
+        /* Özel Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
     </style>
 </head>
-<body class="transition-colors duration-500 bg-[#fafafa] dark:bg-[#0f172a]">
+<body class="transition-colors duration-500 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
     
     <div id="root"></div>
 
@@ -84,18 +123,16 @@
             const [showContactModal, setShowContactModal] = useState(false);
             const [selectedCommittee, setSelectedCommittee] = useState(null); 
             const [galleryIndex, setGalleryIndex] = useState(0);
-            const [isDarkMode, setIsDarkMode] = useState(true); // Site otomatik koyu modda başlar
+            const [isDarkMode, setIsDarkMode] = useState(true);
             const [showMapMenu, setShowMapMenu] = useState(false);
 
-            // Koyu Mod Bildirim State'leri
             const [showDarkModeToast, setShowDarkModeToast] = useState(false);
             const [hasShownToast, setHasShownToast] = useState(false);
 
             useEffect(() => {
-                console.log("%cTalha tarafından yapıldı kopyalanması yasaktır.", "color: #e11d48; font-size: 16px; font-weight: bold; border: 2px solid #e11d48; padding: 10px; border-radius: 5px;");
+                console.log("%cTalha tarafından yapıldı kopyalanması yasaktır.", "color: #0f172a; font-size: 14px; font-weight: 500; border: 1px solid #cbd5e1; padding: 8px; border-radius: 6px;");
             }, []);
 
-            // Ana ekrana gelince bildirimi gösteren Effect
             useEffect(() => {
                 if (!isLoading && !showIntroVideo && !showTermsModal && !hasShownToast) {
                     setHasShownToast(true);
@@ -182,45 +219,43 @@
 
             if (isLoading) {
                 return (
-                    <div className="fixed inset-0 flex flex-col items-center justify-between p-6 bg-[#fafafa] dark:bg-[#0f172a] font-sans selection:bg-[#162a45] selection:text-white transition-colors duration-500 z-[200] overflow-x-hidden overflow-y-auto">
+                    <div className="fixed inset-0 flex flex-col items-center justify-between p-6 bg-slate-50 dark:bg-slate-900 font-sans selection:bg-brand-main selection:text-white transition-colors duration-500 z-[200] overflow-x-hidden overflow-y-auto">
                         
-                        {/* Orta Logo Alanı */}
                         <div className="flex-1 flex flex-col items-center justify-center relative z-20 w-full mt-10 md:mt-0">
-                            <div className="mb-6 md:mb-10 flex flex-col items-center transform transition-transform duration-1000 hover:scale-105">
+                            <div className="mb-8 flex flex-col items-center animate-fade-in-up">
                                 <img 
                                     src="assets/spektrumyazisiz.png" 
                                     alt="Spektrum Logo" 
-                                    className="w-24 h-24 sm:w-32 sm:h-32 md:w-56 md:h-56 object-contain drop-shadow-sm" 
+                                    className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 object-contain drop-shadow-sm opacity-90" 
                                 />
-                                <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif tracking-widest text-[#162a45] dark:text-[#f8fafc] mt-4 transition-colors duration-500 text-center" style={{ fontFamily: 'Georgia, serif' }}>
+                                <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif tracking-widest text-slate-800 dark:text-slate-100 mt-6 text-center">
                                     SPEKTRUM
                                 </h1>
                             </div>
-                            <div className="w-48 sm:w-64 md:w-80 h-3 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-white dark:bg-[#1e293b] p-0.5 relative overflow-hidden transition-colors duration-500">
-                                <div className="h-full bg-[#162a45] dark:bg-[#8c9eb1] transition-all duration-100 ease-out" style={{ width: `${progress}%` }}></div>
+                            <div className="w-48 sm:w-64 md:w-80 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden transition-colors duration-500">
+                                <div className="h-full bg-brand-main dark:bg-brand-accent rounded-full transition-all duration-100 ease-out" style={{ width: `${progress}%` }}></div>
                             </div>
                             <div className="h-auto mt-6 flex items-center justify-center">
-                                <p className="text-[#162a45] dark:text-[#f8fafc] font-serif tracking-widest text-[10px] md:text-sm font-bold uppercase animate-fade-in-up transition-colors duration-500 flex items-center justify-center gap-2 text-center" style={{ fontFamily: 'Georgia, serif' }}>
+                                <p className="text-slate-500 dark:text-slate-400 font-medium tracking-wide text-xs md:text-sm uppercase animate-fade-in-up transition-colors duration-500 flex items-center justify-center gap-2 text-center">
                                     Talha tarafından 
-                                    <svg viewBox="0 0 24 24" className="w-4 h-4 md:w-6 md:h-6 text-white fill-current stroke-[#162a45] dark:stroke-transparent stroke-[1.5px] drop-shadow-md animate-heartbeat">
+                                    <svg viewBox="0 0 24 24" className="w-4 h-4 md:w-5 md:h-5 text-red-500 fill-current animate-heartbeat">
                                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                                     </svg> 
-                                    ile hazırlandı.
+                                    özenle hazırlandı.
                                 </p>
                             </div>
                         </div>
 
-                        {/* Sağ Alt Konuşmacı Alanı (Mobil Uyumlu) */}
-                        <div className="relative w-full flex flex-col items-center md:items-end md:absolute md:bottom-0 md:right-10 animate-fade-in-up z-10 mt-8 md:mt-0">
-                            <div className="relative bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-2 md:p-5 rounded-xl md:rounded-2xl shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] mb-2 mr-0 md:mr-16 transform -rotate-2 hover:rotate-0 transition-transform max-w-[130px] sm:max-w-[150px] md:max-w-none text-center md:text-left z-20">
-                                <p className="text-[#162a45] dark:text-[#f8fafc] font-bold text-xs md:text-lg leading-tight">"EN İYİ POLİTİKA!"</p>
-                                <p className="text-[9px] md:text-sm text-[#8c9eb1] font-mono text-right mt-1">- Işıl IŞIKLI</p>
-                                <div className="absolute -bottom-[8px] md:-bottom-[10px] left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-10 w-3 h-3 md:w-5 md:h-5 bg-white dark:bg-[#1e293b] border-b-2 border-r-2 border-[#162a45] dark:border-[#8c9eb1] transform rotate-45"></div>
+                        <div className="relative w-full flex flex-col items-center md:items-end md:absolute md:bottom-0 md:right-10 animate-fade-in-up z-10 mt-8 md:mt-0 opacity-90">
+                            <div className="relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-lg mb-3 mr-0 md:mr-16 max-w-[140px] sm:max-w-[160px] md:max-w-none text-center md:text-left z-20">
+                                <p className="text-slate-800 dark:text-slate-100 font-semibold text-xs md:text-sm leading-tight italic">"En İyi Politika!"</p>
+                                <p className="text-[9px] md:text-xs text-brand-accent font-medium text-right mt-1.5 uppercase tracking-wider">- Işıl IŞIKLI</p>
+                                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-8 w-4 h-4 bg-white dark:bg-slate-800 border-b border-r border-slate-200 dark:border-slate-700 transform rotate-45"></div>
                             </div>
                             <img 
                                 src="assets/aaisil-S9zZFaal.png" 
                                 alt="Işıl Işıklı"
-                                className="w-24 h-24 sm:w-32 sm:h-32 md:w-72 md:h-72 object-contain object-bottom drop-shadow-2xl relative z-10"
+                                className="w-24 h-24 sm:w-32 sm:h-32 md:w-64 md:h-64 object-contain object-bottom drop-shadow-xl relative z-10"
                             />
                         </div>
                     </div>
@@ -251,27 +286,27 @@
             ];
 
             return (
-                <div className="min-h-screen bg-[#fafafa] dark:bg-[#0f172a] font-sans text-[#162a45] dark:text-[#f8fafc] selection:bg-[#162a45] dark:selection:bg-[#8c9eb1] selection:text-white pb-20 bg-grid-pattern relative transition-colors duration-500">
+                <div className="min-h-screen bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-200 selection:bg-brand-main selection:text-white pb-20 bg-grid-pattern relative transition-colors duration-500">
                     
                     {showIntroVideo && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#162a45]/60 dark:bg-[#0f172a]/80 backdrop-blur-sm p-4 transition-all duration-500">
-                            <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-4 md:p-6 pt-12 relative shadow-[8px_8px_0px_#162a45] dark:shadow-[8px_8px_0px_#8c9eb1] max-w-[450px] w-full flex flex-col items-center animate-modal-pop">
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/70 backdrop-blur-md p-4 transition-all duration-500">
+                            <div className="bg-white dark:bg-slate-800 p-6 pt-12 md:p-8 md:pt-14 rounded-2xl relative shadow-2xl max-w-[450px] w-full flex flex-col items-center animate-modal-pop border border-slate-200 dark:border-slate-700">
                                 
                                 <button
                                     onClick={handleCloseIntro}
-                                    className="absolute top-3 right-3 text-[#162a45] dark:text-[#8c9eb1] hover:rotate-90 transition-transform duration-300 w-8 h-8 flex items-center justify-center border-2 border-transparent hover:border-[#162a45] dark:hover:border-[#8c9eb1] bg-[#f8fafc] dark:bg-[#0f172a]"
+                                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors duration-300 w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-full"
                                 >
-                                    <i className="fa-solid fa-xmark text-xl"></i>
+                                    <i className="fa-solid fa-xmark"></i>
                                 </button>
                                 
-                                <h2 className="text-[#162a45] dark:text-[#8c9eb1] text-xl md:text-2xl font-serif font-bold mb-4 md:mb-6 text-center w-full border-b-2 border-dashed border-[#162a45] dark:border-[#8c9eb1] pb-4 tracking-wide">
+                                <h2 className="text-slate-800 dark:text-white text-xl md:text-2xl font-serif font-bold mb-6 text-center w-full">
                                     Tanıtım Videomuz
                                 </h2>
 
-                                <div className="w-full flex justify-center bg-slate-50 dark:bg-[#0f172a] border-2 border-[#162a45] dark:border-[#8c9eb1] p-1">
+                                <div className="w-full flex justify-center bg-slate-100 dark:bg-slate-900 rounded-xl overflow-hidden p-1 shadow-inner border border-slate-200 dark:border-slate-700">
                                     <iframe 
                                         src="https://www.instagram.com/reel/DV9Aut7jEQb/embed/" 
-                                        className="w-full aspect-[9/16] max-h-[55vh] md:max-h-[500px]"
+                                        className="w-full aspect-[9/16] max-h-[55vh] md:max-h-[500px] rounded-lg"
                                         frameBorder="0" 
                                         scrolling="no" 
                                         allowTransparency="true" 
@@ -283,41 +318,41 @@
                     )}
 
                     {showTermsModal && (
-                        <div className="fixed inset-0 z-[150] flex items-center justify-center bg-[#162a45]/60 dark:bg-[#0f172a]/80 backdrop-blur-sm p-4 transition-all duration-500">
-                            <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 pt-10 relative shadow-[8px_8px_0px_#162a45] dark:shadow-[8px_8px_0px_#8c9eb1] max-w-[450px] w-full flex flex-col animate-modal-pop">
+                        <div className="fixed inset-0 z-[150] flex items-center justify-center bg-slate-900/70 backdrop-blur-md p-4 transition-all duration-500">
+                            <div className="bg-white dark:bg-slate-800 p-8 pt-10 rounded-2xl relative shadow-2xl max-w-[450px] w-full flex flex-col animate-modal-pop border border-slate-200 dark:border-slate-700">
                                 
                                 <div className="w-full flex justify-center mb-6">
                                     <img 
                                         src="assets/spektrumyazisiz.png" 
                                         alt="Spektrum Logo" 
-                                        className="w-16 h-16 object-contain drop-shadow-sm opacity-90" 
+                                        className="w-16 h-16 object-contain opacity-90" 
                                     />
                                 </div>
 
-                                <p className="text-sm md:text-base text-slate-700 dark:text-slate-300 mb-6 leading-relaxed text-center font-medium px-2">
-                                    Talha tarafından tamamen eğlence amaçlı yapılmıştır kopyalanması, çalınması, değiştirilmesi yasaktır.
+                                <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 mb-8 leading-relaxed text-center font-medium">
+                                    Talha tarafından tamamen eğlence amaçlı yapılmıştır. Kopyalanması, çalınması, değiştirilmesi yasaktır.
                                 </p>
 
-                                <div className="flex justify-center mb-6">
-                                    <a href="https://instagram.com/talha.ozturks" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-4 py-2 font-bold text-sm hover:bg-[#0f1d30] dark:hover:bg-white transition-colors border-2 border-transparent dark:hover:border-[#0f172a]">
+                                <div className="flex justify-center mb-8">
+                                    <a href="https://instagram.com/talha.ozturks" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white px-5 py-2.5 rounded-full font-semibold text-sm transition-colors">
                                         <i className="fa-brands fa-instagram text-lg"></i> @talha.ozturks
                                     </a>
                                 </div>
 
                                 <div 
-                                    className="flex items-center gap-3 mb-6 bg-slate-50 dark:bg-[#0f172a] border-2 border-[#162a45] dark:border-[#8c9eb1] p-3 cursor-pointer select-none group" 
+                                    className="flex items-center gap-4 mb-8 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 cursor-pointer select-none group transition-colors hover:border-brand-accent" 
                                     onClick={() => setIsTermsAccepted(!isTermsAccepted)}
                                 >
-                                    <div className={`w-6 h-6 shrink-0 border-2 border-[#162a45] dark:border-[#8c9eb1] flex items-center justify-center transition-colors ${isTermsAccepted ? 'bg-[#162a45] dark:bg-[#8c9eb1]' : 'bg-white dark:bg-[#1e293b] group-hover:bg-slate-200 dark:group-hover:bg-slate-800'}`}>
-                                        {isTermsAccepted && <i className="fa-solid fa-check text-white dark:text-[#0f172a] text-sm"></i>}
+                                    <div className={`w-6 h-6 shrink-0 rounded flex items-center justify-center transition-colors border ${isTermsAccepted ? 'bg-brand-main border-brand-main' : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600'}`}>
+                                        {isTermsAccepted && <i className="fa-solid fa-check text-white text-xs"></i>}
                                     </div>
-                                    <span className="font-bold text-sm text-[#162a45] dark:text-[#f8fafc]">Onayladım, kabul ediyorum.</span>
+                                    <span className="font-semibold text-sm text-slate-700 dark:text-slate-200">Onayladım, kabul ediyorum.</span>
                                 </div>
 
                                 <button 
                                     onClick={() => setShowTermsModal(false)}
                                     disabled={!isTermsAccepted}
-                                    className={`w-full py-3 font-bold tracking-widest uppercase transition-all duration-300 border-2 ${isTermsAccepted ? 'bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] border-[#162a45] dark:border-[#8c9eb1] hover:bg-[#0f1d30] dark:hover:bg-white active:translate-y-1' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border-slate-300 dark:border-slate-700 cursor-not-allowed'}`}
+                                    className={`w-full py-3.5 rounded-xl font-semibold tracking-wide transition-all duration-300 ${isTermsAccepted ? 'bg-brand-main text-white hover:bg-brand-light hover:-translate-y-0.5 shadow-lg' : 'bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed'}`}
                                 >
                                     Siteye Gir
                                 </button>
@@ -326,44 +361,48 @@
                     )}
 
                     {showContactModal && (
-                        <div className="fixed inset-0 z-[400] flex items-center justify-center bg-[#162a45]/60 dark:bg-[#0f172a]/80 backdrop-blur-sm p-4 transition-all duration-500 animate-fade-in-up">
-                            <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 pt-12 relative shadow-[8px_8px_0px_#162a45] dark:shadow-[8px_8px_0px_#8c9eb1] max-w-[500px] w-full flex flex-col items-center animate-modal-pop">
+                        <div className="fixed inset-0 z-[400] flex items-center justify-center bg-slate-900/70 backdrop-blur-md p-4 transition-all duration-500 animate-fade-in-up">
+                            <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl relative shadow-2xl max-w-[480px] w-full flex flex-col items-center animate-modal-pop border border-slate-200 dark:border-slate-700">
                                 
                                 <button
                                     onClick={() => setShowContactModal(false)}
-                                    className="absolute top-3 right-3 text-[#162a45] dark:text-[#8c9eb1] hover:rotate-90 transition-transform duration-300 w-8 h-8 flex items-center justify-center border-2 border-transparent hover:border-[#162a45] dark:hover:border-[#8c9eb1] bg-[#f8fafc] dark:bg-[#0f172a]"
+                                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors duration-300 w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-slate-700 rounded-full"
                                 >
-                                    <i className="fa-solid fa-xmark text-xl"></i>
+                                    <i className="fa-solid fa-xmark"></i>
                                 </button>
                                 
-                                <h2 className="text-[#162a45] dark:text-[#8c9eb1] text-2xl font-serif font-bold mb-6 text-center w-full border-b-2 border-dashed border-[#162a45] dark:border-[#8c9eb1] pb-4 tracking-wide uppercase">
+                                <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mb-4 mx-auto">
+                                    <i className="fa-regular fa-envelope text-xl"></i>
+                                </div>
+
+                                <h2 className="text-slate-800 dark:text-white text-2xl font-serif font-bold mb-8 text-center w-full">
                                     İletişim
                                 </h2>
 
-                                <div className="w-full flex flex-col gap-5">
-                                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-slate-50 dark:bg-[#0f172a] border-2 border-[#162a45] dark:border-[#8c9eb1] shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1]">
-                                        <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                                            <span className="text-xs text-[#8c9eb1] font-bold tracking-widest uppercase mb-1">E-Posta</span>
-                                            <span className="text-[#162a45] dark:text-[#f8fafc] font-mono text-xs sm:text-sm font-bold break-all">spektrumyasalbilimleryk@gmail.com</span>
+                                <div className="w-full flex flex-col gap-4">
+                                    <div className="flex flex-col gap-3 p-5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                                        <div className="flex flex-col">
+                                            <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-1">E-Posta</span>
+                                            <span className="text-slate-800 dark:text-white font-medium text-sm break-all">spektrumyasalbilimleryk@gmail.com</span>
                                         </div>
                                         <a 
                                             href={`mailto:spektrumyasalbilimleryk@gmail.com?subject=Bilgi Talebi&body=${encodeURIComponent(mailBodyText)}`} 
-                                            className="shrink-0 bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-4 py-2 font-bold text-sm hover:bg-[#0f1d30] dark:hover:bg-white transition-colors flex items-center gap-2 border-2 border-transparent dark:hover:border-[#0f172a]"
+                                            className="mt-2 bg-brand-main hover:bg-brand-light text-white rounded-lg px-4 py-2.5 font-medium text-sm transition-colors flex items-center justify-center gap-2 w-full shadow-sm"
                                         >
                                             <i className="fa-solid fa-paper-plane"></i> Posta Gönder
                                         </a>
                                     </div>
 
-                                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-slate-50 dark:bg-[#0f172a] border-2 border-[#162a45] dark:border-[#8c9eb1] shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1]">
-                                        <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                                            <span className="text-xs text-[#8c9eb1] font-bold tracking-widest uppercase mb-1">Instagram</span>
-                                            <span className="text-[#162a45] dark:text-[#f8fafc] font-mono text-xs sm:text-sm font-bold break-all">@spektrumsiyasalbilimler</span>
+                                    <div className="flex flex-col gap-3 p-5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
+                                        <div className="flex flex-col">
+                                            <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider mb-1">Instagram</span>
+                                            <span className="text-slate-800 dark:text-white font-medium text-sm break-all">@spektrumsiyasalbilimler</span>
                                         </div>
                                         <a 
                                             href="https://instagram.com/spektrumsiyasalbilimler" 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="shrink-0 bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-4 py-2 font-bold text-sm hover:bg-[#0f1d30] dark:hover:bg-white transition-colors flex items-center gap-2 border-2 border-transparent dark:hover:border-[#0f172a]"
+                                            className="mt-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white rounded-lg px-4 py-2.5 font-medium text-sm transition-colors flex items-center justify-center gap-2 w-full"
                                         >
                                             <i className="fa-brands fa-instagram"></i> Sayfaya Git
                                         </a>
@@ -375,9 +414,8 @@
 
                     {/* KOMİSYON SINIF EKRANI */}
                     {selectedCommittee && (
-                        <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 transition-all duration-500 animate-fade-in-up overflow-hidden">
+                        <div className="fixed inset-0 z-[500] flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 transition-all duration-500 animate-fade-in-up overflow-hidden">
                             
-                            {/* İleri/Geri Tuşları */}
                             <button 
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -385,9 +423,9 @@
                                     const prevIndex = currentIndex === 0 ? committees.length - 1 : currentIndex - 1;
                                     setSelectedCommittee(committees[prevIndex]);
                                 }}
-                                className="absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 bg-[#fafafa] dark:bg-[#1e293b] border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] text-[#162a45] dark:text-[#f8fafc] hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 flex items-center justify-center shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] transition-all z-[600]"
+                                className="absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center shadow-lg transition-all z-[600]"
                             >
-                                <i className="fa-solid fa-chevron-left text-sm md:text-2xl"></i>
+                                <i className="fa-solid fa-chevron-left text-sm md:text-xl"></i>
                             </button>
 
                             <button 
@@ -397,14 +435,13 @@
                                     const nextIndex = currentIndex === committees.length - 1 ? 0 : currentIndex + 1;
                                     setSelectedCommittee(committees[nextIndex]);
                                 }}
-                                className="absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 bg-[#fafafa] dark:bg-[#1e293b] border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] text-[#162a45] dark:text-[#f8fafc] hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 flex items-center justify-center shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] transition-all z-[600]"
+                                className="absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center shadow-lg transition-all z-[600]"
                             >
-                                <i className="fa-solid fa-chevron-right text-sm md:text-2xl"></i>
+                                <i className="fa-solid fa-chevron-right text-sm md:text-xl"></i>
                             </button>
 
-                            {/* Ana Sınıf Modal Konteyneri */}
                             <div 
-                                className="relative w-full max-w-6xl aspect-square sm:aspect-[4/3] md:aspect-[16/9] bg-[#fafafa] dark:bg-[#0f172a] border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] shadow-[4px_4px_0px_#162a45] md:shadow-[8px_8px_0px_#162a45] dark:shadow-[8px_8px_0px_#8c9eb1] overflow-hidden flex flex-col"
+                                className="relative w-full max-w-6xl aspect-square sm:aspect-[4/3] md:aspect-[16/9] bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-white/10"
                                 style={{ 
                                     backgroundImage: `url('assets/sinif2.png')`,
                                     backgroundSize: 'cover',
@@ -412,82 +449,70 @@
                                     backgroundRepeat: 'no-repeat'
                                 }}
                             >
-                                <div className="absolute inset-0 bg-white/10 dark:bg-black/20 backdrop-blur-[1px]"></div>
+                                <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-[2px]"></div>
                                 
                                 <button
                                     onClick={() => setSelectedCommittee(null)}
-                                    className="absolute top-2 right-2 md:top-4 md:right-4 z-50 text-[#162a45] hover:text-white bg-white hover:bg-red-600 transition-colors w-7 h-7 md:w-10 md:h-10 flex items-center justify-center border-2 border-[#162a45] shadow-[2px_2px_0px_#162a45]"
+                                    className="absolute top-4 right-4 z-50 text-white/70 hover:text-white bg-white/10 hover:bg-red-500/80 backdrop-blur-md transition-colors w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center"
                                 >
                                     <i className="fa-solid fa-xmark text-sm md:text-lg"></i>
                                 </button>
 
-                                {/* Tahta Üzerindeki Komisyon Adı ve Açıklaması */}
                                 <div className="absolute top-[8%] sm:top-[12%] md:top-[18%] left-1/2 -translate-x-1/2 w-[90%] sm:w-[85%] md:w-[65%] text-center z-20 pointer-events-none flex flex-col items-center">
-                                    <div className="bg-[#fafafa]/95 dark:bg-[#1e293b]/95 border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] p-1.5 sm:p-3 md:p-6 shadow-[3px_3px_0px_rgba(22,42,69,0.4)] md:shadow-[6px_6px_0px_rgba(140,158,177,0.4)] backdrop-blur-md transform -rotate-1">
-                                        <h2 className="text-[11px] sm:text-lg md:text-3xl lg:text-4xl font-serif font-bold text-[#162a45] dark:text-white tracking-wide leading-tight">
+                                    <div className="bg-white/90 dark:bg-slate-900/80 border border-white/20 dark:border-slate-700/50 rounded-2xl p-4 sm:p-5 md:p-8 shadow-xl backdrop-blur-md">
+                                        <h2 className="text-sm sm:text-xl md:text-3xl lg:text-4xl font-serif font-bold text-slate-800 dark:text-white tracking-wide leading-tight">
                                             {selectedCommittee.title}
                                         </h2>
-                                        <div className="w-6 sm:w-12 h-0.5 sm:h-1 bg-[#8c9eb1] mx-auto my-1 sm:my-2 md:my-3"></div>
-                                        <p className="text-[7px] sm:text-[10px] md:text-sm lg:text-base text-slate-700 dark:text-slate-300 font-medium leading-tight">
+                                        <div className="w-12 sm:w-16 h-0.5 bg-brand-accent mx-auto my-3 sm:my-4"></div>
+                                        <p className="text-[9px] sm:text-xs md:text-sm lg:text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
                                             {selectedCommittee.desc}
                                         </p>
                                     </div>
                                 </div>
 
-                                {/* Yuvarlak Avatar Başkanlar */}
                                 {selectedCommittee.id === "09" ? (
-                                    <div className="absolute bottom-0 left-0 w-full flex justify-center items-end px-2 md:px-8 z-20 pointer-events-none pb-4 sm:pb-6 md:pb-10">
-                                        <div className="flex flex-col items-center transform hover:scale-105 transition-transform pointer-events-auto">
-                                            {/* Avatar Kapsülü (İki Kişi İçin Yatay Oval) */}
-                                            <div className="relative z-10 w-36 h-20 sm:w-48 sm:h-28 md:w-64 md:h-36 lg:w-72 lg:h-44 rounded-full border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] bg-white dark:bg-[#1e293b] overflow-hidden shadow-[4px_4px_0px_rgba(22,42,69,0.5)]">
+                                    <div className="absolute bottom-0 left-0 w-full flex justify-center items-end px-2 md:px-8 z-20 pointer-events-none pb-4 sm:pb-6 md:pb-8">
+                                        <div className="flex flex-col items-center pointer-events-auto">
+                                            <div className="relative z-10 w-40 h-24 sm:w-56 sm:h-32 md:w-72 md:h-40 lg:w-80 lg:h-48 rounded-[3rem] border-4 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-900 overflow-hidden shadow-2xl">
                                                 <img src="assets/uyanikkabasakalarkaplansiz1.png" alt="Zeynep & Ahmet" className="w-full h-full object-cover object-top" />
                                             </div>
-                                            {/* İsimlik Rozeti */}
-                                            <div className="relative z-20 -mt-3 sm:-mt-4 md:-mt-6 bg-[#fafafa]/95 dark:bg-[#1e293b]/95 border-2 md:border-3 border-[#162a45] dark:border-[#8c9eb1] px-3 py-1.5 md:px-5 md:py-2.5 text-center backdrop-blur-sm shadow-[2px_2px_0px_#162a45] md:shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1]">
-                                                <p className="font-bold text-[#162a45] dark:text-white text-[9px] sm:text-[11px] md:text-sm lg:text-base font-serif tracking-widest whitespace-nowrap">Zeynep UYANIK & Ahmet Tarık KABASAKAL</p>
-                                                <p className="text-[7px] sm:text-[9px] md:text-xs text-[#8c9eb1] font-mono font-bold uppercase whitespace-nowrap mt-0.5 md:mt-1">Oturum Başkanları</p>
+                                            <div className="relative z-20 -mt-4 sm:-mt-6 bg-white dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 px-4 py-2 md:px-6 md:py-3 text-center shadow-lg">
+                                                <p className="font-bold text-slate-800 dark:text-white text-[9px] sm:text-xs md:text-sm font-serif tracking-wide whitespace-nowrap">Zeynep UYANIK & Ahmet Tarık KABASAKAL</p>
+                                                <p className="text-[7px] sm:text-[9px] md:text-xs text-brand-accent font-semibold uppercase whitespace-nowrap mt-0.5 md:mt-1">Oturum Başkanları</p>
                                             </div>
                                         </div>
                                     </div>
                                 ) : selectedCommittee.id === "07" ? (
-                                    <div className="absolute bottom-0 left-0 w-full flex justify-center items-end px-2 md:px-8 z-20 pointer-events-none pb-4 sm:pb-6 md:pb-10">
-                                        <div className="flex flex-col items-center transform hover:scale-105 transition-transform pointer-events-auto">
-                                            {/* Avatar (Tek Kişi İçin Tam Yuvarlak) */}
-                                            <div className="relative z-10 w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 rounded-full border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#0f172a] overflow-hidden shadow-[4px_4px_0px_rgba(22,42,69,0.5)]">
+                                    <div className="absolute bottom-0 left-0 w-full flex justify-center items-end px-2 md:px-8 z-20 pointer-events-none pb-4 sm:pb-6 md:pb-8">
+                                        <div className="flex flex-col items-center pointer-events-auto">
+                                            <div className="relative z-10 w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 rounded-full border-4 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-900 overflow-hidden shadow-2xl">
                                                 <img src="assets/tibetarkaplansiz.png" alt="Tibet" className="w-full h-full object-cover object-top" />
                                             </div>
-                                            {/* İsimlik Rozeti */}
-                                            <div className="relative z-20 -mt-3 sm:-mt-4 md:-mt-5 bg-[#fafafa]/95 dark:bg-[#1e293b]/95 border-2 md:border-3 border-[#162a45] dark:border-[#8c9eb1] px-2 py-1 md:px-4 md:py-2 text-center backdrop-blur-sm shadow-[2px_2px_0px_#162a45] md:shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1]">
-                                                <p className="font-bold text-[#162a45] dark:text-white text-[8px] sm:text-[10px] md:text-sm lg:text-base font-serif tracking-widest whitespace-nowrap">tibetim &lt;3</p>
-                                                <p className="text-[6px] sm:text-[8px] md:text-[10px] text-[#8c9eb1] font-mono font-bold uppercase whitespace-nowrap mt-0.5">Oturum Başkanı</p>
+                                            <div className="relative z-20 -mt-4 sm:-mt-6 bg-white dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 px-4 py-2 md:px-6 md:py-3 text-center shadow-lg">
+                                                <p className="font-bold text-slate-800 dark:text-white text-[9px] sm:text-xs md:text-sm font-serif tracking-wide whitespace-nowrap">tibetim &lt;3</p>
+                                                <p className="text-[7px] sm:text-[9px] md:text-xs text-brand-accent font-semibold uppercase whitespace-nowrap mt-0.5">Oturum Başkanı</p>
                                             </div>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="absolute bottom-0 left-0 w-full flex justify-between items-end px-4 sm:px-8 md:px-16 lg:px-24 z-20 pointer-events-none pb-4 sm:pb-6 md:pb-10">
-                                        {/* Sol Başkan - Kaan */}
-                                        <div className="flex flex-col items-center transform hover:scale-105 transition-transform pointer-events-auto">
-                                            {/* Avatar */}
-                                            <div className="relative z-10 w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 rounded-full border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#0f172a] overflow-hidden shadow-[4px_4px_0px_rgba(22,42,69,0.5)]">
+                                    <div className="absolute bottom-0 left-0 w-full flex justify-between items-end px-4 sm:px-12 md:px-24 lg:px-40 z-20 pointer-events-none pb-4 sm:pb-6 md:pb-8">
+                                        <div className="flex flex-col items-center pointer-events-auto">
+                                            <div className="relative z-10 w-20 h-20 sm:w-28 sm:h-28 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-900 overflow-hidden shadow-2xl">
                                                 <img src="assets/kaankonusuyor.png" alt="Kaan" className="w-full h-full object-cover object-top" />
                                             </div>
-                                            {/* İsimlik Rozeti */}
-                                            <div className="relative z-20 -mt-3 sm:-mt-4 md:-mt-5 bg-[#fafafa]/95 dark:bg-[#1e293b]/95 border-2 md:border-3 border-[#162a45] dark:border-[#8c9eb1] px-2 py-1 md:px-4 md:py-2 text-center backdrop-blur-sm shadow-[2px_2px_0px_#162a45] md:shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1]">
-                                                <p className="font-bold text-[#162a45] dark:text-white text-[8px] sm:text-[10px] md:text-sm lg:text-base font-serif tracking-widest whitespace-nowrap">Kaan YALÇIN</p>
-                                                <p className="text-[6px] sm:text-[8px] md:text-[10px] text-[#8c9eb1] font-mono font-bold uppercase whitespace-nowrap mt-0.5">Oturum Başkanı</p>
+                                            <div className="relative z-20 -mt-3 sm:-mt-5 bg-white dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 px-3 py-1.5 md:px-5 md:py-2.5 text-center shadow-lg">
+                                                <p className="font-bold text-slate-800 dark:text-white text-[8px] sm:text-[10px] md:text-sm font-serif tracking-wide whitespace-nowrap">Kaan YALÇIN</p>
+                                                <p className="text-[6px] sm:text-[8px] md:text-[10px] text-brand-accent font-semibold uppercase whitespace-nowrap mt-0.5">Oturum Başkanı</p>
                                             </div>
                                         </div>
 
-                                        {/* Sağ Başkan - Işıl */}
-                                        <div className="flex flex-col items-center transform hover:scale-105 transition-transform pointer-events-auto">
-                                            {/* Avatar */}
-                                            <div className="relative z-10 w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 rounded-full border-2 md:border-4 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#0f172a] overflow-hidden shadow-[4px_4px_0px_rgba(22,42,69,0.5)]">
+                                        <div className="flex flex-col items-center pointer-events-auto">
+                                            <div className="relative z-10 w-20 h-20 sm:w-28 sm:h-28 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-900 overflow-hidden shadow-2xl">
                                                 <img src="assets/aaisil-S9zZFaal.png" alt="Işıl" className="w-full h-full object-cover object-top" />
                                             </div>
-                                            {/* İsimlik Rozeti */}
-                                            <div className="relative z-20 -mt-3 sm:-mt-4 md:-mt-5 bg-[#fafafa]/95 dark:bg-[#1e293b]/95 border-2 md:border-3 border-[#162a45] dark:border-[#8c9eb1] px-2 py-1 md:px-4 md:py-2 text-center backdrop-blur-sm shadow-[2px_2px_0px_#162a45] md:shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1]">
-                                                <p className="font-bold text-[#162a45] dark:text-white text-[8px] sm:text-[10px] md:text-sm lg:text-base font-serif tracking-widest whitespace-nowrap">Işıl IŞIKLI</p>
-                                                <p className="text-[6px] sm:text-[8px] md:text-[10px] text-[#8c9eb1] font-mono font-bold uppercase whitespace-nowrap mt-0.5">2. Oturum Başkanı</p>
+                                            <div className="relative z-20 -mt-3 sm:-mt-5 bg-white dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 px-3 py-1.5 md:px-5 md:py-2.5 text-center shadow-lg">
+                                                <p className="font-bold text-slate-800 dark:text-white text-[8px] sm:text-[10px] md:text-sm font-serif tracking-wide whitespace-nowrap">Işıl IŞIKLI</p>
+                                                <p className="text-[6px] sm:text-[8px] md:text-[10px] text-brand-accent font-semibold uppercase whitespace-nowrap mt-0.5">2. Oturum Başkanı</p>
                                             </div>
                                         </div>
                                     </div>
@@ -497,17 +522,17 @@
                     )}
 
                     {showSecretGallery && (
-                        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 transition-all duration-500 animate-fade-in-up">
+                        <div className="fixed inset-0 z-[300] flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 transition-all duration-500 animate-fade-in-up">
                             
                             <button
                                 onClick={() => setShowSecretGallery(false)}
-                                className="absolute top-4 right-4 md:top-6 md:right-6 text-white/80 hover:text-red-400 transition-colors duration-300 z-[350] text-3xl md:text-4xl"
+                                className="absolute top-4 right-4 md:top-6 md:right-6 text-white/60 hover:text-white transition-colors duration-300 z-[350] text-3xl md:text-4xl"
                             >
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
 
-                            <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 h-[90vh] md:h-[85vh] overflow-y-auto md:overflow-hidden">
-                                <div className="flex-1 w-full relative flex items-center justify-center h-full min-h-[50vh] md:min-h-0 bg-black border-2 border-slate-700/50 rounded-xl overflow-hidden shadow-2xl">
+                            <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 h-[90vh] md:h-[85vh] overflow-y-auto md:overflow-hidden">
+                                <div className="flex-1 w-full relative flex items-center justify-center h-full min-h-[50vh] md:min-h-0 bg-black/40 rounded-3xl overflow-hidden shadow-2xl border border-white/10 p-4">
                                     <img 
                                         src={secretImages[galleryIndex]} 
                                         alt={`Gizli Galeri ${galleryIndex + 1}`} 
@@ -516,94 +541,89 @@
                                     
                                     <button 
                                         onClick={() => setGalleryIndex(prev => prev === 0 ? secretImages.length - 1 : prev - 1)}
-                                        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center backdrop-blur-sm transition-all border border-white/20 shadow-lg"
+                                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all shadow-lg"
                                     >
-                                        <i className="fa-solid fa-chevron-left text-lg md:text-2xl"></i>
+                                        <i className="fa-solid fa-chevron-left text-lg md:text-xl"></i>
                                     </button>
                                     <button 
                                         onClick={() => setGalleryIndex(prev => prev === secretImages.length - 1 ? 0 : prev + 1)}
-                                        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center backdrop-blur-sm transition-all border border-white/20 shadow-lg"
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white w-10 h-10 md:w-14 md:h-14 rounded-full flex items-center justify-center backdrop-blur-md transition-all shadow-lg"
                                     >
-                                        <i className="fa-solid fa-chevron-right text-lg md:text-2xl"></i>
+                                        <i className="fa-solid fa-chevron-right text-lg md:text-xl"></i>
                                     </button>
 
-                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 border border-white/20 text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-mono tracking-widest backdrop-blur-md">
+                                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/40 text-white/90 px-4 py-1.5 rounded-full text-xs md:text-sm font-medium tracking-widest backdrop-blur-md">
                                         {galleryIndex + 1} / {secretImages.length}
                                     </div>
                                 </div>
 
-                                <div className="w-full md:w-1/3 flex flex-col items-center justify-center relative mt-4 md:mt-0 pb-6 md:pb-0">
-                                    <div className="relative bg-[#fafafa] border-2 border-[#162a45] text-[#162a45] p-3 md:p-5 rounded-2xl shadow-xl mb-4 md:mb-6 animate-float-slow max-w-[180px] md:max-w-[250px] z-10">
-                                        <p className="font-bold text-xs md:text-lg leading-tight text-center">"ekip çok sağlam"</p>
-                                        <p className="text-[9px] md:text-xs text-[#8c9eb1] font-mono mt-1.5 md:mt-2 text-right">-Kaan Yalçın</p>
-                                        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-t-[15px] border-t-[#162a45] border-r-[10px] border-r-transparent"></div>
-                                        <div className="absolute -bottom-[9px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-t-[13px] border-t-[#fafafa] border-r-[8px] border-r-transparent"></div>
+                                <div className="w-full md:w-auto flex flex-col items-center justify-center relative mt-4 md:mt-0 pb-6 md:pb-0 shrink-0">
+                                    <div className="relative bg-white/10 backdrop-blur-md border border-white/20 text-white p-4 rounded-xl shadow-xl mb-6 animate-float-slow max-w-[200px] z-10 text-center">
+                                        <p className="font-semibold text-sm leading-tight">"Ekip çok sağlam"</p>
+                                        <p className="text-[10px] text-white/60 mt-1.5">-Kaan Yalçın</p>
+                                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/10 border-b border-r border-white/20 transform rotate-45"></div>
                                     </div>
                                     
                                     <img 
                                         src="assets/kaankonusuyor.png" 
                                         alt="Kaan Konuşuyor" 
-                                        className="w-32 h-32 md:w-72 md:h-72 object-contain drop-shadow-2xl"
+                                        className="w-32 h-32 md:w-64 md:h-64 object-contain drop-shadow-2xl"
                                     />
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {/* Koyu Mod Bildirimi ve Butonu */}
                     <div className="fixed bottom-6 right-6 z-[600] flex flex-col items-end gap-3 pointer-events-none">
-                        {/* Bildirim Baloncuğu */}
                         <div className={`transition-all duration-500 transform ${showDarkModeToast ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-                            <div className="bg-[#fafafa] dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] text-[#162a45] dark:text-[#f8fafc] px-4 py-2 rounded-xl shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] font-serif font-bold text-xs md:text-sm tracking-wide">
-                                Otomatik Koyu Mod Açıldı!
-                                <div className="absolute -bottom-[6px] right-5 w-3 h-3 bg-[#fafafa] dark:bg-[#1e293b] border-b-2 border-r-2 border-[#162a45] dark:border-[#8c9eb1] transform rotate-45"></div>
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 px-4 py-2.5 rounded-xl shadow-lg font-medium text-xs md:text-sm tracking-wide flex items-center gap-2">
+                                <i className="fa-solid fa-circle-check text-green-500"></i> Otomatik Koyu Mod Açıldı!
                             </div>
                         </div>
 
-                        {/* Koyu Mod Geçiş Butonu */}
                         <button
                             onClick={() => setIsDarkMode(!isDarkMode)}
-                            className="w-14 h-14 rounded-full bg-[#162a45] dark:bg-[#1e293b] border-2 border-transparent dark:border-[#8c9eb1] text-white dark:text-[#8c9eb1] shadow-xl flex items-center justify-center transition-all duration-500 hover:scale-110 overflow-hidden pointer-events-auto"
+                            className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-lg flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl pointer-events-auto"
                             title={isDarkMode ? "Açık Moda Geç" : "Koyu Moda Geç"}
                         >
                             <div className={`relative flex items-center justify-center w-full h-full transition-transform duration-700 ${isDarkMode ? 'rotate-[360deg]' : 'rotate-0'}`}>
-                                <i className={`fa-solid fa-sun absolute transition-all duration-500 text-2xl ${isDarkMode ? 'opacity-100 scale-100' : 'opacity-0 scale-50 -rotate-90'}`}></i>
-                                <i className={`fa-solid fa-moon absolute transition-all duration-500 text-2xl ${!isDarkMode ? 'opacity-100 scale-100' : 'opacity-0 scale-50 rotate-90'}`}></i>
+                                <i className={`fa-solid fa-sun absolute transition-all duration-500 text-lg md:text-xl ${isDarkMode ? 'opacity-100 scale-100' : 'opacity-0 scale-50 -rotate-90'}`}></i>
+                                <i className={`fa-solid fa-moon absolute transition-all duration-500 text-lg md:text-xl ${!isDarkMode ? 'opacity-100 scale-100' : 'opacity-0 scale-50 rotate-90'}`}></i>
                             </div>
                         </button>
                     </div>
 
-                    <nav className="sticky top-0 z-40 bg-[#fafafa]/95 dark:bg-[#0f172a]/95 backdrop-blur-sm border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
+                    <nav className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-500">
                         <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
-                            <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }}>
+                            <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }}>
                                 <img 
                                     src="assets/spektrum.png" 
                                     alt="Spektrum Navbar Logo" 
-                                    className="w-10 h-10 md:w-12 md:h-12 object-contain"
+                                    className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-105 transition-transform"
                                 />
                                 <div className="flex flex-col">
                                     <div className="flex items-baseline gap-1 md:gap-2">
-                                        <h2 className="text-sm md:text-xl font-serif font-bold tracking-widest leading-none">SPEKTRUM</h2>
-                                        <span className="text-[0.45rem] md:text-[0.6rem] tracking-widest text-[#8c9eb1] uppercase">Sempozyumu</span>
+                                        <h2 className="text-sm md:text-xl font-serif font-bold tracking-widest leading-none text-slate-800 dark:text-white">SPEKTRUM</h2>
+                                        <span className="text-[0.45rem] md:text-[0.6rem] tracking-widest text-brand-accent uppercase font-medium">Sempozyumu</span>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div className="hidden md:flex items-center gap-5 lg:gap-8 font-medium text-sm tracking-wide">
-                                <button onClick={() => setShowTeam(false)} className={`transition-colors ${!showTeam ? 'font-bold text-[#162a45] dark:text-white' : 'hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1]'}`}>ANA SAYFA</button>
-                                <a href="#hakkimizda" className="transition-colors hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1] dark:hover:text-white" onClick={() => setShowTeam(false)}>HAKKIMIZDA</a>
-                                <a href="#program" className="transition-colors hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1] dark:hover:text-white" onClick={() => setShowTeam(false)}>PROGRAM</a>
-                                <button onClick={() => setShowTeam(true)} className={`transition-colors ${showTeam ? 'border-b-2 border-[#162a45] dark:border-white pb-1 font-bold text-[#162a45] dark:text-white' : 'hover:text-[#8c9eb1] text-[#162a45] dark:text-[#8c9eb1]'}`}>KADROMUZ</button>
+                            <div className="hidden md:flex items-center gap-6 lg:gap-8 font-medium text-sm tracking-wide">
+                                <button onClick={() => setShowTeam(false)} className={`transition-colors ${!showTeam ? 'font-bold text-brand-main dark:text-white' : 'text-slate-500 dark:text-slate-400 hover:text-brand-main dark:hover:text-white'}`}>ANA SAYFA</button>
+                                <a href="#hakkimizda" className="text-slate-500 dark:text-slate-400 hover:text-brand-main dark:hover:text-white transition-colors" onClick={() => setShowTeam(false)}>HAKKIMIZDA</a>
+                                <a href="#program" className="text-slate-500 dark:text-slate-400 hover:text-brand-main dark:hover:text-white transition-colors" onClick={() => setShowTeam(false)}>PROGRAM</a>
+                                <button onClick={() => setShowTeam(true)} className={`transition-colors ${showTeam ? 'font-bold text-brand-main dark:text-white' : 'text-slate-500 dark:text-slate-400 hover:text-brand-main dark:hover:text-white'}`}>KADROMUZ</button>
                                 
                                 <button 
                                     onClick={() => setShowContactModal(true)} 
-                                    className="w-10 h-10 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#1e293b] text-[#162a45] dark:text-[#f8fafc] flex items-center justify-center shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1] hover:-translate-y-0.5 transition-transform" 
+                                    className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" 
                                     title="İletişim"
                                 >
                                     <i className="fa-regular fa-envelope text-lg"></i>
                                 </button>
 
-                                <button className="border-2 border-[#162a45] dark:border-[#8c9eb1] px-6 py-2 hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] transition-colors duration-300 font-bold">
+                                <button className="bg-brand-main hover:bg-brand-light text-white px-6 py-2.5 rounded-full transition-colors duration-300 font-semibold shadow-sm">
                                     KAYIT OL
                                 </button>
                             </div>
@@ -611,13 +631,13 @@
                             <div className="md:hidden flex items-center gap-3">
                                 <button 
                                     onClick={() => setShowContactModal(true)} 
-                                    className="w-9 h-9 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-[#fafafa] dark:bg-[#1e293b] text-[#162a45] dark:text-[#f8fafc] flex items-center justify-center shadow-[2px_2px_0px_#162a45] dark:shadow-[2px_2px_0px_#8c9eb1] active:translate-y-0.5 transition-transform"
+                                    className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center transition-colors"
                                 >
                                     <i className="fa-regular fa-envelope text-base"></i>
                                 </button>
                                 <button 
                                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-                                    className="text-[#162a45] dark:text-[#f8fafc] p-2 focus:outline-none"
+                                    className="text-slate-800 dark:text-slate-200 p-2 focus:outline-none"
                                 >
                                     <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'} text-2xl`}></i>
                                 </button>
@@ -625,40 +645,40 @@
                         </div>
 
                         {isMobileMenuOpen && (
-                            <div className="md:hidden absolute top-20 left-0 w-full bg-[#fafafa] dark:bg-[#0f172a] border-b-2 border-[#162a45] dark:border-[#8c9eb1] shadow-xl animate-fade-in-up" style={{ animationDuration: '0.2s' }}>
-                                <div className="flex flex-col px-6 py-6 gap-6 font-bold tracking-widest text-sm">
-                                    <button onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }} className={`text-left w-full border-b border-slate-200 dark:border-slate-700 pb-2 ${!showTeam ? 'text-[#162a45] dark:text-white' : 'text-[#8c9eb1] dark:text-[#8c9eb1]'}`}>ANA SAYFA</button>
-                                    <a href="#hakkimizda" onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }} className="text-left w-full border-b border-slate-200 dark:border-slate-700 pb-2 text-[#8c9eb1] hover:text-[#162a45] dark:hover:text-white">HAKKIMIZDA</a>
-                                    <a href="#program" onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }} className="text-left w-full border-b border-slate-200 dark:border-slate-700 pb-2 text-[#8c9eb1] hover:text-[#162a45] dark:hover:text-white">PROGRAM</a>
-                                    <button onClick={() => { setShowTeam(true); setIsMobileMenuOpen(false); }} className={`text-left w-full border-b border-slate-200 dark:border-slate-700 pb-2 ${showTeam ? 'text-[#162a45] dark:text-white' : 'text-[#8c9eb1] dark:text-[#8c9eb1]'}`}>KADROMUZ</button>
-                                    <button className="border-2 border-[#162a45] dark:border-[#8c9eb1] bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-6 py-3 mt-2 transition-colors duration-300 w-full text-center hover:bg-transparent dark:hover:bg-transparent hover:text-[#162a45] dark:hover:text-[#8c9eb1]">KAYIT OL</button>
+                            <div className="md:hidden absolute top-20 left-0 w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-lg animate-fade-in-up" style={{ animationDuration: '0.2s' }}>
+                                <div className="flex flex-col px-6 py-6 gap-5 font-semibold tracking-wider text-sm uppercase">
+                                    <button onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }} className={`text-left w-full border-b border-slate-100 dark:border-slate-800 pb-3 ${!showTeam ? 'text-brand-main dark:text-white' : 'text-slate-500 dark:text-slate-400'}`}>ANA SAYFA</button>
+                                    <a href="#hakkimizda" onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }} className="text-left w-full border-b border-slate-100 dark:border-slate-800 pb-3 text-slate-500 dark:text-slate-400">HAKKIMIZDA</a>
+                                    <a href="#program" onClick={() => { setShowTeam(false); setIsMobileMenuOpen(false); }} className="text-left w-full border-b border-slate-100 dark:border-slate-800 pb-3 text-slate-500 dark:text-slate-400">PROGRAM</a>
+                                    <button onClick={() => { setShowTeam(true); setIsMobileMenuOpen(false); }} className={`text-left w-full border-b border-slate-100 dark:border-slate-800 pb-3 ${showTeam ? 'text-brand-main dark:text-white' : 'text-slate-500 dark:text-slate-400'}`}>KADROMUZ</button>
+                                    <button className="bg-brand-main text-white px-6 py-3.5 mt-2 rounded-xl transition-colors duration-300 w-full text-center">KAYIT OL</button>
                                 </div>
                             </div>
                         )}
                     </nav>
 
                     {showTeam ? (
-                        <main className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-16 min-h-[70vh] animate-fade-in-up">
-                            <div className="text-center mb-10 md:mb-16 relative">
-                                <h1 className="text-4xl md:text-7xl font-serif font-bold mb-4 text-[#162a45] dark:text-white">Kadromuz</h1>
-                                <p className="text-base md:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto border-t-2 border-dashed border-[#162a45] dark:border-[#8c9eb1] pt-4 mt-4 px-4 transition-colors duration-500">
+                        <main className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20 min-h-[70vh] animate-fade-in-up">
+                            <div className="text-center mb-12 md:mb-20 relative">
+                                <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4 text-slate-800 dark:text-white">Kadromuz</h1>
+                                <p className="text-base md:text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto font-medium mt-4">
                                     Spektrum Sempozyumu'nu hayata geçiren ekibimizle tanışın.
                                 </p>
                             </div>
                             
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
                                 {teamMembers.map((member) => (
-                                    <div key={member.id} className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 flex flex-col items-center group shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] hover:-translate-y-2 transition-transform duration-300">
-                                        <div className="w-28 h-28 md:w-32 md:h-32 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-[#f8fafc] dark:bg-[#0f172a] mb-4 overflow-hidden rounded-full p-1 transition-colors duration-500">
-                                            <img src={member.img} alt={member.name} className="w-full h-full object-cover rounded-full filter grayscale group-hover:grayscale-0 transition-all duration-300" />
+                                    <div key={member.id} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 flex flex-col items-center group shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                                        <div className="w-28 h-28 md:w-32 md:h-32 bg-slate-50 dark:bg-slate-700 mb-5 overflow-hidden rounded-full p-1">
+                                            <img src={member.img} alt={member.name} className="w-full h-full object-cover rounded-full filter grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" />
                                         </div>
-                                        <h3 className="font-bold text-lg md:text-xl font-serif mb-1 text-center text-[#162a45] dark:text-white">{member.name}</h3>
-                                        <p className="text-[0.65rem] md:text-xs text-[#8c9eb1] dark:text-slate-400 mb-6 uppercase tracking-wider font-bold text-center h-8 flex items-center justify-center">{member.role}</p>
+                                        <h3 className="font-bold text-lg md:text-xl font-serif mb-1 text-center text-slate-800 dark:text-white">{member.name}</h3>
+                                        <p className="text-[0.65rem] md:text-xs text-brand-accent mb-6 uppercase tracking-wider font-semibold text-center h-8 flex items-center justify-center">{member.role}</p>
                                         <a 
                                             href={`https://instagram.com/${member.instagram}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="mt-auto flex items-center gap-2 text-[#162a45] dark:text-white hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] transition-colors border-2 border-[#162a45] dark:border-[#8c9eb1] px-4 py-2 text-sm font-bold w-full justify-center"
+                                            className="mt-auto flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg px-4 py-2 text-sm font-medium w-full justify-center transition-colors"
                                         >
                                             <i className="fa-brands fa-instagram text-lg"></i> @{member.instagram}
                                         </a>
@@ -667,129 +687,120 @@
 
                                 <div 
                                     onClick={() => setShowSecretGallery(true)}
-                                    className="cursor-pointer group relative flex flex-col items-center justify-center p-6 border-2 border-[#162a45] dark:border-[#8c9eb1] shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] hover:-translate-y-2 transition-transform duration-300 min-h-[300px] overflow-hidden"
-                                    style={{
-                                        backgroundColor: '#5c0f14',
-                                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E")`,
-                                        backgroundBlendMode: 'multiply'
-                                    }}
+                                    className="cursor-pointer group relative flex flex-col items-center justify-center p-6 rounded-2xl border border-rose-200 dark:border-rose-900/50 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[300px] overflow-hidden"
+                                    style={{ backgroundColor: isDarkMode ? '#2e1014' : '#fff1f2' }}
                                 >
-                                    <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500"></div>
-                                    
-                                    <h3 className="relative z-10 font-bold text-4xl md:text-5xl font-serif text-[#f8fafc] border-4 border-dashed border-[#f8fafc]/80 p-4 transform -rotate-12 group-hover:rotate-0 transition-transform duration-500 drop-shadow-2xl tracking-widest">
+                                    <div className="absolute inset-0 bg-rose-500/0 group-hover:bg-rose-500/5 transition-colors duration-500"></div>
+                                    <h3 className="relative z-10 font-bold text-3xl md:text-4xl font-serif text-rose-600 dark:text-rose-400 border border-dashed border-rose-300 dark:border-rose-800 rounded-xl p-4 transform -rotate-3 group-hover:rotate-0 group-hover:scale-105 transition-all duration-500 tracking-wider">
                                         GİZLİ!
                                     </h3>
                                 </div>
-
                             </div>
                         </main>
                     ) : (
                         <main className="max-w-7xl mx-auto px-4 md:px-8">
-                            <section className="py-12 md:py-24 flex flex-col lg:flex-row items-center gap-10 md:gap-12 border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
-                                <div className="flex-1 space-y-6 md:space-y-8 w-full">
-                                    <div className="inline-flex flex-wrap items-center gap-2 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-white dark:bg-[#1e293b] p-1 pr-4 shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] transition-colors duration-500">
-                                        <span className="bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-3 py-1 text-xs font-bold tracking-wider transition-colors duration-500">TEMA 2026</span>
-                                        <span className="text-xs md:text-sm font-bold tracking-wide text-[#162a45] dark:text-white">Devletin Rolü ve Sorumlulukları</span>
+                            
+                            {/* HERO SECTION */}
+                            <section className="py-16 md:py-28 flex flex-col lg:flex-row items-center gap-12 border-b border-slate-200 dark:border-slate-800 transition-colors duration-500">
+                                <div className="flex-1 space-y-8 w-full">
+                                    <div className="inline-flex items-center gap-3 bg-white dark:bg-slate-800 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
+                                        <span className="bg-brand-main text-white px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider">TEMA 2026</span>
+                                        <span className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-200">Devletin Rolü ve Sorumlulukları</span>
                                     </div>
                                     
-                                    <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-bold leading-[1.1] text-[#162a45] dark:text-white">
+                                    <h1 className="text-5xl sm:text-6xl md:text-[5rem] lg:text-[6rem] font-serif font-bold leading-[1.05] text-slate-800 dark:text-white tracking-tight">
                                         Siyaseti <br />
-                                        <span className="text-transparent transition-colors duration-500" style={{ WebkitTextStroke: isDarkMode ? '1px #8c9eb1' : '1px #162a45' }}>Yeniden</span> <br />
+                                        <span className="text-brand-main dark:text-blue-400">Yeniden</span> <br />
                                         Düşünmek.
                                     </h1>
                                     
-                                    <p className="text-base md:text-lg text-slate-700 dark:text-slate-300 max-w-xl border-l-4 border-[#162a45] dark:border-[#8c9eb1] pl-4 md:pl-5 font-medium transition-colors duration-500">
+                                    <p className="text-base md:text-xl text-slate-500 dark:text-slate-400 max-w-xl border-l-4 border-brand-accent pl-5 font-medium leading-relaxed">
                                         Spektrum, eleştirel düşünceyi ve politika analizini merkeze alan genç bir organizatör topluluğudur.
                                     </p>
                                     
-                                    <div className="flex flex-wrap items-center gap-4 pt-4 w-full">
-                                        <button className="w-full sm:w-auto justify-center bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] px-6 md:px-8 py-4 font-bold tracking-wide flex items-center gap-2 hover:bg-[#0f1d30] dark:hover:bg-white transition-colors group">
+                                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-4 w-full">
+                                        <button className="w-full sm:w-auto justify-center bg-brand-main hover:bg-brand-light text-white px-8 py-4 rounded-full font-semibold tracking-wide flex items-center gap-2 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 group">
                                             Başvuruyu Tamamla <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform ml-1"></i>
                                         </button>
 
-                                        <div className="flex items-center gap-2 md:gap-4 border-2 border-[#162a45] dark:border-[#8c9eb1] bg-white dark:bg-[#1e293b] px-4 py-3 md:py-2.5 shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] transition-colors duration-500">
-                                            <div className="flex flex-col items-center">
-                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-[#162a45] dark:text-[#f8fafc]">{String(timeLeft.days).padStart(2, '0')}</span>
-                                                <span className="text-[10px] uppercase font-bold text-[#8c9eb1]">GÜN</span>
+                                        <div className="flex items-center gap-4 bg-white dark:bg-slate-800 px-6 py-3 md:py-3.5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 w-full sm:w-auto justify-center sm:justify-start">
+                                            <div className="flex flex-col items-center min-w-[3rem]">
+                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-slate-800 dark:text-white">{String(timeLeft.days).padStart(2, '0')}</span>
+                                                <span className="text-[9px] uppercase font-semibold text-brand-accent mt-1">GÜN</span>
                                             </div>
-                                            <span className="text-xl md:text-2xl font-bold text-[#162a45] dark:text-[#f8fafc]">:</span>
-                                            <div className="flex flex-col items-center">
-                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-[#162a45] dark:text-[#f8fafc]">{String(timeLeft.hours).padStart(2, '0')}</span>
-                                                <span className="text-[10px] uppercase font-bold text-[#8c9eb1]">SAAT</span>
+                                            <span className="text-lg font-bold text-slate-300 dark:text-slate-600 mb-4">:</span>
+                                            <div className="flex flex-col items-center min-w-[3rem]">
+                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-slate-800 dark:text-white">{String(timeLeft.hours).padStart(2, '0')}</span>
+                                                <span className="text-[9px] uppercase font-semibold text-brand-accent mt-1">SAAT</span>
                                             </div>
-                                            <span className="text-xl md:text-2xl font-bold text-[#162a45] dark:text-[#f8fafc]">:</span>
-                                            <div className="flex flex-col items-center">
-                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-[#162a45] dark:text-[#f8fafc]">{String(timeLeft.minutes).padStart(2, '0')}</span>
-                                                <span className="text-[10px] uppercase font-bold text-[#8c9eb1]">DAKİKA</span>
+                                            <span className="text-lg font-bold text-slate-300 dark:text-slate-600 mb-4">:</span>
+                                            <div className="flex flex-col items-center min-w-[3rem]">
+                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-slate-800 dark:text-white">{String(timeLeft.minutes).padStart(2, '0')}</span>
+                                                <span className="text-[9px] uppercase font-semibold text-brand-accent mt-1">DAKİKA</span>
                                             </div>
-                                            <span className="text-xl md:text-2xl font-bold text-[#162a45] dark:text-[#f8fafc] animate-pulse">:</span>
-                                            <div className="flex flex-col items-center">
-                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-[#162a45] dark:text-[#f8fafc]">{String(timeLeft.seconds).padStart(2, '0')}</span>
-                                                <span className="text-[10px] uppercase font-bold text-[#8c9eb1]">SANİYE</span>
+                                            <span className="text-lg font-bold text-brand-accent mb-4 animate-pulse">:</span>
+                                            <div className="flex flex-col items-center min-w-[3rem]">
+                                                <span className="font-mono text-xl md:text-2xl font-bold leading-none text-brand-main dark:text-blue-400">{String(timeLeft.seconds).padStart(2, '0')}</span>
+                                                <span className="text-[9px] uppercase font-semibold text-brand-accent mt-1">SANİYE</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="flex-1 w-full lg:w-auto flex flex-col items-center max-w-lg mx-auto mt-8 lg:mt-0">
-                                    <div className="flex items-center justify-center gap-4 md:gap-5 mb-6 md:mb-8 w-full">
-                                        <img src="assets/iu1.png" alt="İstanbul Üniversitesi" className="w-12 h-12 md:w-20 md:h-20 object-contain" />
-                                        <span className="text-[#162a45] dark:text-[#8c9eb1] font-bold text-lg md:text-xl"><i className="fa-solid fa-xmark"></i></span>
-                                        <img src="assets/spektrum.png" alt="Spektrum" className="w-12 h-12 md:w-20 md:h-20 object-contain" />
-                                    </div>
+                                <div className="flex-1 w-full lg:w-auto flex flex-col items-center max-w-lg mx-auto mt-12 lg:mt-0">
                                     
-                                    <div className="relative w-full">
-                                        <div className="absolute inset-0 bg-[#8c9eb1]/20 dark:bg-[#8c9eb1]/10 translate-x-3 translate-y-3 md:translate-x-4 md:translate-y-4 border-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500"></div>
+                                    <div className="w-full relative">
+                                        <div className="absolute inset-0 bg-slate-200/50 dark:bg-slate-800/50 translate-x-3 translate-y-3 rounded-3xl"></div>
                                         
-                                        <div className="relative bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] aspect-[4/3] md:aspect-square flex flex-col justify-between overflow-hidden text-center shadow-lg group transition-colors duration-500">
+                                        <div className="relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl aspect-[4/3] flex flex-col justify-between overflow-hidden shadow-lg group transition-colors duration-500">
                                             
-                                            <div className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-800">
+                                            <div className="absolute inset-0 z-0 bg-slate-100 dark:bg-slate-900">
                                                 <iframe 
                                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1505.2505980577284!2d28.964379127730897!3d41.014289598171295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab9928713a0c1%3A0x386ce9b7e7d9e922!2s%C4%B0stanbul%20%C3%9Cniversitesi%20Siyasal%20Bilgiler%20Fak%C3%BCltesi!5e0!3m2!1str!2str!4v1779039696918!5m2!1str!2str" 
-                                                    className="w-full h-full border-0" 
+                                                    className="w-full h-full border-0 opacity-90 dark:opacity-75" 
                                                     allowFullScreen="" 
                                                     loading="lazy" 
                                                     referrerPolicy="no-referrer-when-downgrade"
                                                 ></iframe>
                                             </div>
 
-                                            <div className="absolute top-3 right-3 md:top-4 md:right-4 z-30">
+                                            <div className="absolute top-4 right-4 z-30">
                                                 <button 
                                                     onClick={() => setShowMapMenu(!showMapMenu)} 
-                                                    className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#162a45] dark:bg-[#8c9eb1] text-white dark:text-[#0f172a] flex items-center justify-center text-lg shadow-[2px_2px_0px_#8c9eb1] dark:shadow-[2px_2px_0px_#1e293b] hover:scale-105 transition-transform"
+                                                    className="w-10 h-10 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center text-lg shadow-md border border-slate-200 dark:border-slate-700 hover:scale-105 transition-transform"
                                                 >
-                                                    <i className={`fa-solid ${showMapMenu ? 'fa-xmark' : 'fa-plus'} text-sm md:text-base`}></i>
+                                                    <i className={`fa-solid ${showMapMenu ? 'fa-xmark' : 'fa-location-dot'} text-sm`}></i>
                                                 </button>
                                                 
                                                 {showMapMenu && (
-                                                    <div className="absolute top-10 md:top-12 right-0 bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] shadow-[4px_4px_0px_#162a45] dark:shadow-[4px_4px_0px_#8c9eb1] flex flex-col w-48 sm:w-56 animate-fade-in-up mt-2 z-40">
-                                                        <a href="https://maps.apple.com/place?place-id=IE164E99F0F1EF66F" target="_blank" rel="noopener noreferrer" className="px-3 md:px-4 py-2.5 md:py-3 hover:bg-[#162a45] hover:text-white dark:hover:bg-[#8c9eb1] dark:hover:text-[#0f172a] text-xs md:text-sm font-bold border-b-2 border-[#162a45] dark:border-[#8c9eb1] flex items-center gap-2 md:gap-3 text-[#162a45] dark:text-white transition-colors">
+                                                    <div className="absolute top-12 right-0 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl flex flex-col w-48 sm:w-56 animate-fade-in-up mt-2 z-40 overflow-hidden">
+                                                        <a href="https://maps.apple.com/place?place-id=IE164E99F0F1EF66F" target="_blank" rel="noopener noreferrer" className="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs md:text-sm font-medium border-b border-slate-100 dark:border-slate-700 flex items-center gap-3 text-slate-700 dark:text-slate-200 transition-colors">
                                                             <i className="fa-brands fa-apple text-base md:text-lg"></i> Apple Haritalar
                                                         </a>
-                                                        <a href="https://maps.app.goo.gl/kdxexqpdhr2KgUbUA" target="_blank" rel="noopener noreferrer" className="px-3 md:px-4 py-2.5 md:py-3 hover:bg-[#162a45] hover:text-white dark:hover:bg-[#8c9eb1] dark:hover:text-[#0f172a] text-xs md:text-sm font-bold flex items-center gap-2 md:gap-3 text-[#162a45] dark:text-white transition-colors">
+                                                        <a href="https://maps.app.goo.gl/kdxexqpdhr2KgUbUA" target="_blank" rel="noopener noreferrer" className="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs md:text-sm font-medium flex items-center gap-3 text-slate-700 dark:text-slate-200 transition-colors">
                                                             <i className="fa-brands fa-google text-base md:text-lg"></i> Google Haritalar
                                                         </a>
                                                     </div>
                                                 )}
                                             </div>
 
-                                            <div className="relative z-10 bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-sm border-b-2 border-[#162a45] dark:border-[#8c9eb1] p-3 md:p-5 pointer-events-none transition-colors duration-500 flex items-center justify-center sm:justify-start gap-3 md:gap-4">
-                                                <img src="assets/iucizim1.png" alt="İÜ Çizim" className="w-10 h-10 md:w-14 md:h-14 object-contain" />
-                                                <h3 className="font-serif font-bold text-[#162a45] dark:text-white text-[10px] md:text-sm lg:text-base leading-snug text-left">
+                                            <div className="relative z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 md:p-5 pointer-events-none border-b border-slate-200 dark:border-slate-700 flex items-center gap-4">
+                                                <img src="assets/iucizim1.png" alt="İÜ Çizim" className="w-10 h-10 md:w-12 md:h-12 object-contain opacity-80" />
+                                                <h3 className="font-serif font-bold text-slate-800 dark:text-white text-xs md:text-sm lg:text-base leading-snug">
                                                     İstanbul Üniversitesi<br/>Siyasal Bilgiler Fakültesi
                                                 </h3>
                                             </div>
                                             
                                             <div className="flex-1 pointer-events-none"></div>
 
-                                            <div className="relative z-10 bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-sm border-t-2 border-[#162a45] dark:border-[#8c9eb1] p-2 md:p-5 flex flex-col gap-1 md:gap-2 font-mono text-[9px] md:text-sm font-bold text-left pointer-events-none transition-colors duration-500">
+                                            <div className="relative z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-4 md:p-5 flex flex-col gap-2 font-mono text-[10px] md:text-sm font-medium text-left pointer-events-none border-t border-slate-200 dark:border-slate-700">
                                                 <div className="flex justify-between items-center w-full">
-                                                    <span className="text-[#8c9eb1]">TARİH</span>
-                                                    <span className="text-[#162a45] dark:text-white">25–27 EYLÜL 2026</span>
+                                                    <span className="text-brand-accent font-semibold tracking-wider">TARİH</span>
+                                                    <span className="text-slate-800 dark:text-white font-bold">25–27 EYLÜL 2026</span>
                                                 </div>
                                                 <div className="flex justify-between items-center w-full">
-                                                    <span className="text-[#8c9eb1]">MEKÂN</span>
-                                                    <span className="text-[#162a45] dark:text-white">İ.Ü. SBF</span>
+                                                    <span className="text-brand-accent font-semibold tracking-wider">MEKÂN</span>
+                                                    <span className="text-slate-800 dark:text-white font-bold">İ.Ü. SBF</span>
                                                 </div>
                                             </div>
 
@@ -798,11 +809,12 @@
                                 </div>
                             </section>
 
-                            <section id="hakkimizda" className="py-16 md:py-20 border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
-                                <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
-                                    <div>
-                                        <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-[#162a45] dark:text-white">Manifesto</h2>
-                                        <div className="space-y-4 text-slate-700 dark:text-slate-300 text-base md:text-lg leading-relaxed transition-colors duration-500">
+                            {/* HAKKIMIZDA */}
+                            <section id="hakkimizda" className="py-16 md:py-24 border-b border-slate-200 dark:border-slate-800 transition-colors duration-500">
+                                <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+                                    <div className="order-2 md:order-1">
+                                        <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-slate-800 dark:text-white">Manifesto</h2>
+                                        <div className="space-y-5 text-slate-600 dark:text-slate-400 text-base md:text-lg leading-relaxed font-medium">
                                             <p>
                                                 Akademik disiplinin yöntemini, kamusal meselelerin sıcak gündemiyle bir araya getiren bir zemin kurmayı amaçlıyoruz. 
                                             </p>
@@ -811,82 +823,83 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="bg-[#162a45] dark:bg-[#1e293b] dark:border-2 dark:border-[#8c9eb1] text-white p-6 md:p-12 relative mx-2 md:mx-0 transition-colors duration-500">
-                                        <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-6 h-6 md:w-8 md:h-8 border-t-4 border-l-4 border-[#8c9eb1]"></div>
-                                        <div className="absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 w-6 h-6 md:w-8 md:h-8 border-b-4 border-r-4 border-[#8c9eb1]"></div>
-                                        <h3 className="text-xl md:text-2xl font-serif font-bold mb-3 md:mb-4 text-[#8c9eb1]">3 Günlük Serüven</h3>
-                                        <p className="text-white/80 dark:text-slate-300 text-sm md:text-base">Teoriden pratiğe, müzakereden oylamaya uzanan, gerçek dünyaya en yakın simülasyon deneyimi.</p>
+                                    <div className="order-1 md:order-2 bg-slate-800 dark:bg-slate-800/50 text-white p-8 md:p-12 rounded-3xl relative shadow-lg overflow-hidden border border-slate-700">
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-main opacity-50 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+                                        <h3 className="relative z-10 text-2xl md:text-3xl font-serif font-bold mb-4">3 Günlük Serüven</h3>
+                                        <p className="relative z-10 text-slate-300 text-sm md:text-base leading-relaxed">Teoriden pratiğe, müzakereden oylamaya uzanan, gerçek dünyaya en yakın simülasyon deneyimi.</p>
                                     </div>
                                 </div>
                             </section>
 
-                            <section id="program" className="py-16 md:py-20 border-b-2 border-[#162a45] dark:border-[#8c9eb1] transition-colors duration-500">
-                                <h2 className="text-3xl md:text-4xl font-serif font-bold mb-10 md:mb-12 text-center text-[#162a45] dark:text-white">Program Akışı</h2>
+                            {/* PROGRAM */}
+                            <section id="program" className="py-16 md:py-24 border-b border-slate-200 dark:border-slate-800 transition-colors duration-500">
+                                <div className="text-center mb-12 md:mb-16">
+                                    <span className="text-brand-accent font-bold tracking-widest text-xs uppercase mb-2 block">Takvim</span>
+                                    <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-800 dark:text-white">Program Akışı</h2>
+                                </div>
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] flex flex-col group hover:-translate-y-2 transition-transform duration-300">
-                                        <div className="border-b-2 border-[#162a45] dark:border-[#8c9eb1] p-3 md:p-4 bg-[#f8fafc] dark:bg-[#0f172a] flex justify-between items-center transition-colors duration-500">
-                                            <span className="font-bold text-lg md:text-xl text-[#162a45] dark:text-white">GÜN 1</span>
-                                            <span className="text-xs md:text-sm font-mono text-[#8c9eb1] font-bold">25 EYLÜL</span>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 flex flex-col border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-shadow">
+                                        <div className="flex justify-between items-center mb-6">
+                                            <span className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white flex items-center justify-center font-bold text-sm border border-slate-200 dark:border-slate-600">1</span>
+                                            <span className="text-xs font-semibold text-brand-accent tracking-wider">25 EYLÜL</span>
                                         </div>
-                                        <div className="p-5 md:p-6 flex-1">
-                                            <h3 className="text-xl md:text-2xl font-serif font-bold mb-2 md:mb-3 text-[#162a45] dark:text-white group-hover:text-[#8c9eb1] transition-colors">Uzman</h3>
-                                            <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                                                Akademik açılış konferansları ve teorik zemin. Alanında öncü isimlerden, üç gün boyunca işlenecek tartışmaların kavramsal çerçevesini birlikte kuruyoruz.
-                                            </p>
-                                        </div>
+                                        <h3 className="text-xl font-serif font-bold mb-3 text-slate-800 dark:text-white">Uzman Açılışı</h3>
+                                        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-medium">
+                                            Akademik açılış konferansları ve teorik zemin. Alanında öncü isimlerden, üç gün boyunca işlenecek tartışmaların kavramsal çerçevesini birlikte kuruyoruz.
+                                        </p>
                                     </div>
 
-                                    <div className="bg-[#162a45] dark:bg-[#334155] text-white border-2 border-[#162a45] dark:border-[#8c9eb1] flex flex-col group hover:-translate-y-2 transition-transform duration-300 md:shadow-[8px_8px_0px_#8c9eb1] shadow-[4px_4px_0px_#8c9eb1] transition-colors duration-500">
-                                        <div className="border-b-2 border-white/20 dark:border-[#8c9eb1]/30 p-3 md:p-4 bg-white/5 dark:bg-[#0f172a]/30 flex justify-between items-center">
-                                            <span className="font-bold text-lg md:text-xl">GÜN 2</span>
-                                            <span className="text-xs md:text-sm font-mono text-[#8c9eb1] font-bold">26 EYLÜL</span>
+                                    <div className="bg-brand-main dark:bg-blue-900/30 text-white rounded-2xl p-6 md:p-8 flex flex-col border border-transparent dark:border-blue-800/50 shadow-md hover:shadow-xl transition-shadow relative overflow-hidden">
+                                        <div className="flex justify-between items-center mb-6 relative z-10">
+                                            <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-sm">2</span>
+                                            <span className="text-xs font-semibold text-blue-200 tracking-wider">26 EYLÜL</span>
                                         </div>
-                                        <div className="p-5 md:p-6 flex-1">
-                                            <h3 className="text-xl md:text-2xl font-serif font-bold mb-2 md:mb-3 text-[#8c9eb1]">Tartışma & Taslak</h3>
-                                            <p className="text-white/80 dark:text-slate-300 text-sm leading-relaxed">
-                                                Kriz senaryoları, komisyon müzakereleri ve yasa taslaklarının kaleme alınması. Katılımcılar, gerçek dünyaya yakın simülasyonlarla hukuki metinler üretiyor.
-                                            </p>
-                                        </div>
+                                        <h3 className="text-xl font-serif font-bold mb-3 relative z-10">Tartışma & Taslak</h3>
+                                        <p className="text-blue-100/80 text-sm leading-relaxed font-medium relative z-10">
+                                            Kriz senaryoları, komisyon müzakereleri ve yasa taslaklarının kaleme alınması. Katılımcılar, gerçek dünyaya yakın simülasyonlarla hukuki metinler üretiyor.
+                                        </p>
                                     </div>
 
-                                    <div className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] flex flex-col group hover:-translate-y-2 transition-transform duration-300">
-                                        <div className="border-b-2 border-[#162a45] dark:border-[#8c9eb1] p-3 md:p-4 bg-[#f8fafc] dark:bg-[#0f172a] flex justify-between items-center transition-colors duration-500">
-                                            <span className="font-bold text-lg md:text-xl text-[#162a45] dark:text-white">GÜN 3</span>
-                                            <span className="text-xs md:text-sm font-mono text-[#8c9eb1] font-bold">27 EYLÜL</span>
+                                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 flex flex-col border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-shadow">
+                                        <div className="flex justify-between items-center mb-6">
+                                            <span className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-700 text-slate-800 dark:text-white flex items-center justify-center font-bold text-sm border border-slate-200 dark:border-slate-600">3</span>
+                                            <span className="text-xs font-semibold text-brand-accent tracking-wider">27 EYLÜL</span>
                                         </div>
-                                        <div className="p-5 md:p-6 flex-1">
-                                            <h3 className="text-xl md:text-2xl font-serif font-bold mb-2 md:mb-3 text-[#162a45] dark:text-white group-hover:text-[#8c9eb1] transition-colors">Genel Oturumlar</h3>
-                                            <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                                                Komisyon raporlarının sunumu, genel kurul müzakeresi ve oylama. Üç günün ortak çıktısı, meclis onayıyla bir politika belgesine dönüşüyor.
-                                            </p>
-                                        </div>
+                                        <h3 className="text-xl font-serif font-bold mb-3 text-slate-800 dark:text-white">Genel Oturumlar</h3>
+                                        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-medium">
+                                            Komisyon raporlarının sunumu, genel kurul müzakeresi ve oylama. Üç günün ortak çıktısı, meclis onayıyla bir politika belgesine dönüşüyor.
+                                        </p>
                                     </div>
                                 </div>
                             </section>
 
-                            <section id="komisyonlar" className="py-16 md:py-20">
-                                <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
-                                    <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4 text-[#162a45] dark:text-white transition-colors duration-500">Dokuz Farklı Disiplin,<br/>Ortak Bir Vizyon.</h2>
-                                    <p className="text-base md:text-lg text-slate-600 dark:text-slate-300 px-2 transition-colors duration-500">
+                            {/* KOMİSYONLAR */}
+                            <section id="komisyonlar" className="py-16 md:py-24">
+                                <div className="text-center max-w-3xl mx-auto mb-16">
+                                    <span className="text-brand-accent font-bold tracking-widest text-xs uppercase mb-2 block">Çalışma Grupları</span>
+                                    <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6 text-slate-800 dark:text-white tracking-tight leading-tight">Dokuz Farklı Disiplin,<br/>Ortak Bir Vizyon.</h2>
+                                    <p className="text-base md:text-lg text-slate-500 dark:text-slate-400 font-medium px-4">
                                         Her komisyon, "Devletin Rolü ve Sorumlulukları" ana temasını kendi disiplinin perspektifinden okur ve müzakerenin sonunda kurula bir taslak sunar.
                                     </p>
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                                     {committees.map((com) => (
                                         <div 
                                             key={com.id} 
                                             onClick={() => setSelectedCommittee(com)}
-                                            className="bg-white dark:bg-[#1e293b] border-2 border-[#162a45] dark:border-[#8c9eb1] p-6 hover:bg-[#162a45] dark:hover:bg-[#8c9eb1] hover:text-white dark:hover:text-[#0f172a] transition-all duration-300 group cursor-pointer relative overflow-hidden"
+                                            className="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 hover:border-brand-accent dark:hover:border-brand-accent hover:shadow-lg transition-all duration-300 group cursor-pointer relative overflow-hidden flex flex-col"
                                         >
-                                            <div className="absolute -right-2 -top-2 md:-right-4 md:-top-4 text-7xl md:text-8xl font-serif font-bold text-slate-100 dark:text-slate-800 group-hover:text-white/5 dark:group-hover:text-[#0f172a]/10 transition-colors duration-500 z-0">
+                                            <div className="absolute -right-4 -top-6 text-[8rem] font-serif font-bold text-slate-50 dark:text-slate-700/30 group-hover:text-slate-100 dark:group-hover:text-slate-700/60 transition-colors duration-500 z-0 select-none">
                                                 {com.id}
                                             </div>
-                                            <div className="relative z-10">
-                                                <i className={`${com.icon} text-3xl md:text-4xl mb-5 md:mb-6 text-[#162a45] dark:text-[#f8fafc] group-hover:text-[#8c9eb1] dark:group-hover:text-[#0f172a] transition-colors duration-300`}></i>
-                                                <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-[#162a45] dark:text-white group-hover:text-white dark:group-hover:text-[#0f172a] transition-colors duration-300">{com.title}</h3>
-                                                <p className="text-sm text-slate-600 dark:text-slate-300 group-hover:text-white/80 dark:group-hover:text-[#0f172a]/80 leading-relaxed transition-colors duration-300">
+                                            <div className="relative z-10 flex-1 flex flex-col">
+                                                <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 flex items-center justify-center mb-6 group-hover:bg-brand-main group-hover:text-white transition-colors duration-300 border border-slate-200 dark:border-slate-600 group-hover:border-transparent">
+                                                    <i className={`${com.icon} text-xl`}></i>
+                                                </div>
+                                                <h3 className="text-xl font-bold mb-3 text-slate-800 dark:text-white">{com.title}</h3>
+                                                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
                                                     {com.desc}
                                                 </p>
                                             </div>
@@ -898,28 +911,33 @@
                         </main>
                     )}
 
-                    <footer className="bg-white dark:bg-[#1e293b] border-t-2 border-[#162a45] dark:border-[#8c9eb1] py-10 md:py-12 mt-8 transition-colors duration-500">
-                        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
-                            <div className="flex flex-col items-center md:flex-row md:items-center gap-3 text-center md:text-left">
+                    {/* FOOTER */}
+                    <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-12 md:py-16 transition-colors duration-500">
+                        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-8">
+                            <div className="flex flex-col items-center md:flex-row md:items-center gap-4 text-center md:text-left">
                                 <img 
                                     src="assets/spektrum.png" 
                                     alt="Spektrum Footer Logo" 
-                                    className="w-10 h-10 object-contain"
+                                    className="w-12 h-12 object-contain opacity-80"
                                 />
                                 <div>
-                                    <h2 className="text-lg font-serif font-bold tracking-widest text-[#162a45] dark:text-white transition-colors duration-500">SPEKTRUM</h2>
-                                    <p className="text-[0.6rem] tracking-widest text-slate-500 dark:text-slate-400 uppercase">Siyasal Bilimler Sempozyumu</p>
+                                    <h2 className="text-xl font-serif font-bold tracking-widest text-slate-800 dark:text-white">SPEKTRUM</h2>
+                                    <p className="text-[0.65rem] tracking-widest text-slate-400 dark:text-slate-500 uppercase font-semibold mt-1">Siyasal Bilimler Sempozyumu</p>
                                 </div>
                             </div>
                             
-                            <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm font-bold text-[#162a45] dark:text-white transition-colors duration-500">
-                                <a href="#" className="hover:text-[#8c9eb1] dark:hover:text-[#8c9eb1] transition-colors">İLETİŞİM</a>
-                                <a href="#" className="hover:text-[#8c9eb1] dark:hover:text-[#8c9eb1] transition-colors">SSS</a>
-                                <a href="#" className="hover:text-[#8c9eb1] dark:hover:text-[#8c9eb1] transition-colors">KAYIT SÜRECİ</a>
+                            <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                <button onClick={() => setShowContactModal(true)} className="hover:text-brand-main dark:hover:text-white transition-colors">İLETİŞİM</button>
+                                <a href="#" className="hover:text-brand-main dark:hover:text-white transition-colors">SSS</a>
+                                <a href="#" className="hover:text-brand-main dark:hover:text-white transition-colors">KAYIT SÜRECİ</a>
                             </div>
                         </div>
-                        <div className="text-center text-[0.65rem] md:text-xs text-slate-500 dark:text-slate-400 mt-8 md:mt-10 font-mono border-t border-slate-200 dark:border-slate-700 pt-6 px-4 transition-colors duration-500">
-                            © 2026 Spektrum Sempozyumu. İ.Ü. Siyasal Bilgiler Fakültesi. Tüm hakları saklıdır.
+                        <div className="max-w-7xl mx-auto px-4 md:px-8">
+                            <div className="w-full h-px bg-slate-200 dark:bg-slate-800 my-8"></div>
+                            <div className="text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4 text-[0.7rem] md:text-xs text-slate-400 dark:text-slate-500 font-medium">
+                                <span>© 2026 Spektrum Sempozyumu. İ.Ü. Siyasal Bilgiler Fakültesi. Tüm hakları saklıdır.</span>
+                                <span>Design by Talha</span>
+                            </div>
                         </div>
                     </footer>
                 </div>
